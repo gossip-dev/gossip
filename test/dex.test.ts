@@ -25,6 +25,10 @@ import {
   SWAP_ROUTER02,
   V3_FACTORY,
 } from "../src/dex.js";
+import {
+  activateAutonomyProposal,
+  proposeAutonomy,
+} from "../src/trade-autonomy.js";
 
 const tokenInAddress = "0x1000000000000000000000000000000000000001";
 const tokenOutAddress = "0x1000000000000000000000000000000000000002";
@@ -521,6 +525,60 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
         4000n,
         "retries must not repeat a swap",
       );
+
+      const now = Math.floor(Date.now() / 1000);
+      await proposeAutonomy(
+        state,
+        {
+          id: "fixture-auto",
+          account: recipient,
+          inputToken: tokenInAddress,
+          outputTokens: [tokenOutAddress],
+          actionKinds: ["quick-buy"],
+          maxInputPerTrade: "1000",
+          maxInputPerUtcDay: "1000",
+          maxInputTotal: "1000",
+          maxTradesPerUtcDay: 1,
+          maxExecutions: 1,
+          maxInputBalanceBps: 10000,
+          maxSlippageBps: 100,
+          gasLimit: "500000",
+          maxFeePerGas: "10000000000",
+          maxPriorityFeePerGas: "1000000000",
+          maxGasCostPerTrade: "10000000000000000",
+          maxGasCostPerUtcDay: "10000000000000000",
+          maxDeadlineSeconds: 300,
+          minNativeReserveWei: "0",
+          feeTiers: [3000],
+          validUntil: now + 3600,
+        },
+        now,
+      );
+      await activateAutonomyProposal(state, "fixture-auto", recipient, now);
+      signer.reset();
+      await (await input.mint(recipient, 1000n)).wait();
+      const autonomousBuy = [
+        ...cli,
+        "trade",
+        "buy",
+        "--id",
+        "fixture-auto-buy",
+        "--token-out",
+        tokenOutAddress,
+        "--spend-wei",
+        "1000",
+        "--fee",
+        "3000",
+        "--slippage-bps",
+        "100",
+        "--deadline-seconds",
+        "300",
+        "--directory",
+        state,
+      ];
+      await execute(process.execPath, autonomousBuy, { env: cliEnv });
+      await execute(process.execPath, autonomousBuy, { env: cliEnv });
+      assert.equal(await output.balanceOf(recipient), 6000n);
     } finally {
       await new Promise<void>((resolve) => proxy.close(() => resolve()));
       await rm(directory, { recursive: true, force: true });

@@ -11,6 +11,8 @@ import { WalletVault } from "./wallet.js";
 import { createCredentialStore } from "./credential-store.js";
 import { loadConfiguration } from "./configuration.js";
 import { hostConfiguration, type SupportedHost } from "./hosts.js";
+import { installInstructions } from "./instruction-install.js";
+import { chooseConfirmEach, readAutonomyStatus } from "./trade-autonomy.js";
 
 const standardNames = [
   "EIP-55",
@@ -52,6 +54,8 @@ export async function onboardingCommand(
     "--network",
     "--rpc",
     "--skills-directory",
+    "--trade-mode",
+    "--instructions-file",
   ]);
   const seen = new Set<string>();
   for (let i = 0; i < args.length; i += 2) {
@@ -78,6 +82,18 @@ export async function onboardingCommand(
   const configPath = option(args, "--config");
   if (configPath && !isAbsolute(configPath))
     throw new Error("--config must be absolute");
+  const instructionsPath = option(args, "--instructions-file");
+  if (instructionsPath && !isAbsolute(instructionsPath)) {
+    throw new Error("--instructions-file must be absolute");
+  }
+  const requestedTradeMode = option(args, "--trade-mode");
+  if (
+    requestedTradeMode &&
+    requestedTradeMode !== "confirm-each" &&
+    requestedTradeMode !== "buy-and-fire"
+  ) {
+    throw new Error("--trade-mode must be confirm-each or buy-and-fire");
+  }
   const hostArgs = [
     resolve(dirname(fileURLToPath(import.meta.url)), "../dist/cli.js"),
     "serve",
@@ -181,10 +197,23 @@ export async function onboardingCommand(
         nextStep:
           "Select the documented host skill directory with --skills-directory.",
       };
+  const instructions = instructionsPath
+    ? await installInstructions(instructionsPath)
+    : {
+        changed: false,
+        pending: true,
+        nextStep:
+          "Provide the active AGENTS.md or equivalent as --instructions-file to install the trading-mode prompt additively.",
+      };
+  if (requestedTradeMode === "confirm-each") {
+    await chooseConfirmEach(directory);
+  }
+  const tradeMode = await readAutonomyStatus(directory);
   console.log(
     JSON.stringify({
       schemaVersion: 1,
       skills,
+      instructions,
       runtime: {
         version: process.versions.node,
         ready: Number(process.versions.node.split(".")[0]) >= 24,
@@ -230,13 +259,20 @@ export async function onboardingCommand(
         };
       }),
       trading: {
-        executionAuthorized: false,
-        status: "permission-required",
+        executionAuthorized: tradeMode.executionAuthorized,
+        status: tradeMode.mode,
+        mode: tradeMode.mode,
         adapter: "uniswap-v3-exact-input",
         identityWallet: wallet.address ?? null,
         tradingWallet: null,
         nextStep:
-          "Select --address explicitly when quoting, then authorize that single trade locally. Setup grants no trading permission.",
+          requestedTradeMode === "buy-and-fire"
+            ? "Create and review a fully bounded proposal with trade autonomy propose, then activate it locally. Setup never grants standing trade authority."
+            : tradeMode.mode === "choice-required"
+              ? "Ask the owner to choose confirm-each or bounded buy-and-fire before the first trading request."
+              : tradeMode.mode === "confirm-each"
+                ? "Quote the exact trade, then obtain the existing interactive one-trade confirmation before execution."
+                : "Execute only exact requests that remain inside the active local policy.",
       },
     }),
   );

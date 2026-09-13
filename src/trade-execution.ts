@@ -1,6 +1,6 @@
-import { mkdir, open, readFile, rename, rm } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { randomUUID, createHash } from "node:crypto";
+import { createHash } from "node:crypto";
 import {
   Interface,
   getAddress,
@@ -19,6 +19,9 @@ import {
   V3_FACTORY,
   verifyDexDeployment,
 } from "./dex.js";
+import { assertActiveAutonomyReservation } from "./trade-autonomy.js";
+export { withTradeLock, writeTradeFile } from "./trade-state.js";
+import { withTradeLock, writeTradeFile } from "./trade-state.js";
 
 const uint = z
   .string()
@@ -59,6 +62,25 @@ export const permissionSchema = z
     quote: quoteSchema,
     gasLimit: uint,
     maxFeePerGas: uint,
+    maxPriorityFeePerGas: uint.optional(),
+    minNativeReserveWei: uint.optional(),
+    authorizationSource: z
+      .object({
+        kind: z.literal("standing-envelope"),
+        envelopeId: z.string().regex(/^[a-zA-Z0-9_-]{1,64}$/),
+        envelopeRevision: z.number().int().positive(),
+        requestId: z.string().regex(/^[a-zA-Z0-9_-]{1,64}$/),
+        reservationFingerprint: z.string().regex(/^[0-9a-f]{64}$/),
+        requestIntent: z
+          .object({
+            tokenOut: address,
+            spendType: z.enum(["fixed", "balance-bps"]),
+            spendValue: uint,
+          })
+          .strict(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 type Permission = z.infer<typeof permissionSchema>;
@@ -97,7 +119,9 @@ export function validatePermission(permission: Permission): void {
     throw new Error("Invalid trade bounds");
   if (
     BigInt(permission.gasLimit) === 0n ||
-    BigInt(permission.maxFeePerGas) === 0n
+    BigInt(permission.maxFeePerGas) === 0n ||
+    (permission.maxPriorityFeePerGas !== undefined &&
+      BigInt(permission.maxPriorityFeePerGas) === 0n)
   )
     throw new Error("Gas bounds must be positive");
   const expected = swapTransaction(permission);
@@ -117,39 +141,6 @@ function swapTransaction(permission: Permission) {
   });
 }
 
-export async function withTradeLock<T>(
-  directory: string,
-  action: () => Promise<T>,
-): Promise<T> {
-  await mkdir(directory, { recursive: true, mode: 0o700 });
-  const path = join(directory, "trade.lock");
-  const lock = await open(path, "wx", 0o600);
-  try {
-    return await action();
-  } finally {
-    await lock.close();
-    await rm(path, { force: true });
-  }
-}
-export async function writeTradeFile(
-  directory: string,
-  name: string,
-  value: unknown,
-): Promise<void> {
-  const temporary = join(directory, `.${randomUUID()}.tmp`);
-  try {
-    const file = await open(temporary, "wx", 0o600);
-    try {
-      await file.writeFile(JSON.stringify(value));
-      await file.sync();
-    } finally {
-      await file.close();
-    }
-    await rename(temporary, join(directory, name));
-  } finally {
-    await rm(temporary, { force: true });
-  }
-}
 async function readJournal(directory: string): Promise<Journal> {
   try {
     return JSON.parse(
@@ -250,12 +241,14 @@ export async function executeTrade(
           entry.approval = await sign(transaction);
           journal[id] = entry;
           await writeTradeFile(directory, "trades.json", journal);
+          await assertCurrentPermission();
           return await broadcast(provider, entry.approval);
         }
       }
       entry.swap = await sign(swapTransaction(permission));
       journal[id] = entry;
       await writeTradeFile(directory, "trades.json", journal);
+      await assertCurrentPermission();
       return await broadcast(provider, entry.swap);
 
       async function resume(sent: SentTransaction, kind: "approval" | "swap") {
@@ -297,6 +290,17 @@ export async function executeTrade(
             nextStep:
               "Permission revoked or expired; reconciliation is read-only.",
           };
+        if (permission.authorizationSource) {
+          try {
+            await assertAutonomyPermission();
+          } catch {
+            return {
+              ...status,
+              nextStep:
+                "Autonomy is revoked or changed; reconciliation is read-only and recorded bytes will not be rebroadcast.",
+            };
+          }
+        }
         await assertCurrentPermission();
         return broadcast(provider, sent);
       }
@@ -312,6 +316,19 @@ export async function executeTrade(
             BigInt(Math.floor(Date.now() / 1000))
         )
           throw new Error("Trade authorization changed");
+        if (permission.authorizationSource) {
+          await assertAutonomyPermission();
+        }
+      }
+
+      async function assertAutonomyPermission() {
+        const source = permission.authorizationSource!;
+        await assertActiveAutonomyReservation(directory, {
+          id: source.requestId,
+          policyId: source.envelopeId,
+          policyRevision: source.envelopeRevision,
+          fingerprint: source.reservationFingerprint,
+        });
       }
 
       async function sign(transaction: {
@@ -335,15 +352,18 @@ export async function executeTrade(
           fees.maxFeePerGas === null ||
           fees.maxPriorityFeePerGas === null ||
           fees.maxFeePerGas > BigInt(permission.maxFeePerGas) ||
+          (permission.maxPriorityFeePerGas !== undefined &&
+            fees.maxPriorityFeePerGas >
+              BigInt(permission.maxPriorityFeePerGas)) ||
           fees.maxPriorityFeePerGas > fees.maxFeePerGas
         )
           throw new Error(
             "Gas price exceeds permission or fee model unsupported",
           );
-        if (
-          (await provider.getBalance(q.account)) <
-          gasLimit * fees.maxFeePerGas
-        )
+        const requiredNativeBalance =
+          gasLimit * fees.maxFeePerGas +
+          BigInt(permission.minNativeReserveWei ?? "0");
+        if ((await provider.getBalance(q.account)) < requiredNativeBalance)
           throw new Error("Insufficient ETH for gas");
         const nonce = await provider.getTransactionCount(q.account, "pending");
         await assertCurrentPermission();

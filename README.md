@@ -93,7 +93,7 @@ Use the [setup-gossip skill and command](docs/setup-gossip.md) for wallet-first 
 
 The `network` commands validate chain 4663 and provide read-only balances, token decimals, allowances, receipts and fee data. RPC URLs are saved locally with owner-only file mode where supported; provider paths/query strings are omitted from diagnostic output. Keep provider credentials out of prompts and public configuration.
 
-The trading preview supports a single-pool Uniswap V3 exact-input ERC-20 swap using the officially documented SwapRouter02 and QuoterV2 deployments. `trade quote` returns unsigned intent. `trade authorize` requires local interactive confirmation for one exact account/trade and bounded gas; `trade execute` uses that permission. No standing autonomous trading policy is delivered yet. Use a separate state directory if the trading account differs from the Gossip Identity Wallet; the quoted account must match the wallet explicitly configured in that directory.
+The trading preview supports a single-pool Uniswap V3 exact-input ERC-20 swap using the officially documented SwapRouter02 and QuoterV2 deployments. `trade quote` returns unsigned intent. `trade authorize` requires local interactive confirmation for one exact account/trade and bounded gas; `trade execute` uses that permission. A separately activated bounded policy can authorize explicit ERC-20 quick buys within token, amount, frequency, slippage, gas, fee and expiry limits. Use a separate state directory if the trading account differs from the Gossip Identity Wallet; the quoted account must match the wallet explicitly configured in that directory.
 
 Transactions are simulated before signing. Exact-amount approval is supported from zero allowance; nonzero insufficient allowances require owner handling. The local journal is persisted before broadcast; retries resend identical signed bytes and reconcile receipts. Revocation stops new signing and rebroadcast, but cannot revoke already broadcast transactions or token allowances. Processes using the same state directory are serialized; independent installations must not concurrently trade through the same account. After a crashed process, a stale `trade.lock` requires confirming that the process is gone before removing that lock.
 
@@ -103,6 +103,13 @@ the background. `order check` only obtains a fresh quote and reports whether the
 slippage-bounded output meets the limit. Execution still requires the existing
 `quote -> authorize` (interactive `CONFIRM`) `-> execute` flow. See
 [the local order book guide](docs/local-order-book.md).
+
+`setup-gossip --instructions-file ABSOLUTE_PATH` can add the kit's managed
+trading instructions to an existing `AGENTS.md` or host-equivalent file without
+replacing its other rules. The agent asks the owner to choose `confirm-each` or
+bounded autonomy before trading. Durable watcher and DCA definitions are
+available, but their execution worker and native ETH adapter remain acceptance
+gates. See [the autonomous trading contract](docs/autonomous-trading.md).
 
 Spec #2 remains open: real host runs, the public engine and inherited standards dependencies are not supplied by this preview. Automatic fee replacement, externally consumed nonce recovery, complete reorg acceptance, contract-wallet execution, release provenance and real Uniswap fork acceptance remain pending. Tests use synthetic accounts/contracts, never production funds. Onboarding reports each standard separately instead of claiming universal wallet compliance.
 

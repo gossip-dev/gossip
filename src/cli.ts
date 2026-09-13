@@ -16,6 +16,10 @@ import {
 import { readSecret } from "./secret-prompt.js";
 import { hostConfiguration, type SupportedHost } from "./hosts.js";
 import { installHost, uninstallHost } from "./host-install.js";
+import {
+  installInstructions,
+  uninstallInstructions,
+} from "./instruction-install.js";
 import { createStandardsCapabilityReport } from "./standards.js";
 
 const defaultDirectory = resolve(homedir(), ".gossip");
@@ -30,6 +34,8 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
       const { onboardingCommand } = await import("./onboarding.js");
       return await onboardingCommand(directory, argv.slice(1));
     }
+    if (command === "instructions")
+      return await instructionsCommand(argv.slice(1));
     if (command === "status") return await status(directory);
     if (command === "doctor") return await doctor(directory);
     if (Number(process.versions.node.split(".")[0]) < 24) {
@@ -320,6 +326,23 @@ async function hostUninstallCommand(
   console.log(JSON.stringify({ host, config: configPath, ...result }));
 }
 
+async function instructionsCommand(args: string[]): Promise<void> {
+  const action = args[0];
+  if (action !== "install" && action !== "uninstall") {
+    throw new Error("instructions requires install or uninstall");
+  }
+  if (args.length !== 3 || args[1] !== "--file") {
+    throw new Error("instructions requires --file ABSOLUTE");
+  }
+
+  const filePath = requiredAbsoluteOption(args, "--file");
+  const result =
+    action === "install"
+      ? await installInstructions(filePath)
+      : await uninstallInstructions(filePath);
+  console.log(JSON.stringify(result));
+}
+
 async function standardsCommand(directory: string): Promise<void> {
   const config = await loadConfiguration(directory);
   const report = createStandardsCapabilityReport({
@@ -371,7 +394,7 @@ function requiredOption(args: string[], name: string): string {
 }
 function printHelp(): void {
   console.log(
-    "gossip status|doctor|setup-gossip|network|trade|setup|connect|serve|disconnect|wallet|policy|host-config|host-install|host-uninstall|standards [--directory ABSOLUTE]",
+    "gossip status|doctor|setup-gossip|instructions|network|trade|setup|connect|serve|disconnect|wallet|policy|host-config|host-install|host-uninstall|standards [--directory ABSOLUTE]",
   );
 }
 
@@ -396,7 +419,19 @@ function safeError(error: unknown): string {
     error.message.startsWith("Order ") ||
     error.message.startsWith("Invalid order") ||
     error.message.startsWith("Invalid trade order arguments") ||
-    error.message.startsWith("trade order requires")
+    error.message.startsWith("trade order requires") ||
+    error.message.startsWith("Invalid trade autonomy arguments") ||
+    error.message.startsWith("trade autonomy requires") ||
+    error.message.startsWith("Autonomy")
+  )
+    return error.message;
+  if (
+    error.message.startsWith("Instruction ") ||
+    error.message.startsWith("Existing Gossip instruction") ||
+    error.message.startsWith("Gossip instruction") ||
+    error.message.startsWith("Refusing to modify a symlinked instruction") ||
+    error.message.startsWith("Another Gossip instruction") ||
+    error.message.startsWith("instructions requires")
   )
     return error.message;
   if (/configuration/i.test(error.message)) {

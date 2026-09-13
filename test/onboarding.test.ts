@@ -56,6 +56,40 @@ test("setup-gossip inspection reports missing prerequisites without creating a w
   }
 });
 
+test("setup-gossip installs agent instructions and records confirm-each mode", async () => {
+  const { readFile, writeFile } = await import("node:fs/promises");
+  const directory = await mkdtemp(join(tmpdir(), "gossip-onboard-trading-"));
+  const state = join(directory, "state");
+  const instructions = join(directory, "AGENTS.md");
+  try {
+    await writeFile(instructions, "# Existing rules\n", "utf8");
+    const report = JSON.parse(
+      (
+        await run(process.execPath, [
+          ...cli,
+          "setup-gossip",
+          "--host",
+          "grok-bot",
+          "--trade-mode",
+          "confirm-each",
+          "--instructions-file",
+          instructions,
+          "--directory",
+          state,
+        ])
+      ).stdout,
+    );
+    assert.equal(report.trading.mode, "confirm-each");
+    assert.equal(report.trading.executionAuthorized, false);
+    assert.equal(report.instructions.changed, true);
+    const content = await readFile(instructions, "utf8");
+    assert.match(content, /# Existing rules/u);
+    assert.match(content, /gossip:instructions:start/u);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test("setup-gossip verifies an attached wallet without requiring a keyring or an engine", async () => {
   const { Wallet } = await import("ethers");
   const { writeFile, readFile } = await import("node:fs/promises");

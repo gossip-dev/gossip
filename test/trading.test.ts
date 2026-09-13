@@ -71,6 +71,31 @@ test("trade authorization refuses non-interactive confirmation without creating 
   }
 });
 
+test("trade autonomy CLI records confirm-each without granting standing authority", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "gossip-trade-mode-"));
+  try {
+    assert.deepEqual(
+      JSON.parse((await trade(directory, ["autonomy", "status"])).stdout),
+      { mode: "choice-required", executionAuthorized: false },
+    );
+    assert.deepEqual(
+      JSON.parse(
+        (
+          await trade(directory, [
+            "autonomy",
+            "choose",
+            "--mode",
+            "confirm-each",
+          ])
+        ).stdout,
+      ),
+      { mode: "confirm-each", executionAuthorized: false },
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test("trade order CLI creates, lists, summarizes, and cancels local intents", async () => {
   const directory = await mkdtemp(join(tmpdir(), "gossip-trade-order-"));
 
@@ -180,6 +205,71 @@ test("trade order derives the account from the configured wallet", async () => {
 
     assert.match(result.stderr, /wallet operation failed/i);
     assert.deepEqual(await readdir(directory), []);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("trade watcher and DCA definitions are available through the CLI", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "gossip-strategy-cli-"));
+  try {
+    await writeExternalWalletProfile(directory);
+    await trade(directory, ["autonomy", "choose", "--mode", "confirm-each"]);
+    const watcher = JSON.parse(
+      (
+        await trade(directory, [
+          "watcher",
+          "create",
+          "--id",
+          "price-watch",
+          "--token-in",
+          tokenIn,
+          "--token-out",
+          tokenOut,
+          "--comparison",
+          "at-or-above",
+          "--amount-out",
+          "1200",
+          "--interval-seconds",
+          "60",
+          "--slippage-bps",
+          "100",
+        ])
+      ).stdout,
+    );
+    assert.equal(watcher.strategy.kind, "watcher");
+    assert.equal(watcher.executionAuthorized, false);
+
+    const dca = JSON.parse(
+      (
+        await trade(directory, [
+          "dca",
+          "create",
+          "--id",
+          "daily-dca",
+          "--token-in",
+          tokenIn,
+          "--token-out",
+          tokenOut,
+          "--amount-in",
+          "1000",
+          "--anchor-at",
+          "1900000000",
+          "--interval-seconds",
+          "3600",
+          "--max-runs",
+          "10",
+          "--slippage-bps",
+          "100",
+        ])
+      ).stdout,
+    );
+    assert.equal(dca.strategy.kind, "dca");
+    assert.equal(
+      JSON.parse((await trade(directory, ["watcher", "list"])).stdout)
+        .strategies.length,
+      1,
+    );
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

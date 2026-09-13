@@ -1,0 +1,115 @@
+{
+  "valid": {
+    "protocol": "gossip/2-draft.1",
+    "schema_revision": "2026-09-11",
+    "schema": "gossip.public-submission.v1",
+    "auth_profile": "gossip-eip191-v2",
+    "operation_kind": "public_submission",
+    "operation_id": "public-submit-1",
+    "actor": {
+      "chain_id": "4663",
+      "address": "0x1111111111111111111111111111111111111111"
+    },
+    "endpoint": "https://gossip.example/mcp/",
+    "audience": "https://gossip.example/",
+    "result": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-09",
+      "schema": "gossip.result.v2",
+      "subject": {
+        "kind": "token",
+        "chain_id": "4663",
+        "address": "0x2222222222222222222222222222222222222222"
+      },
+      "evidence_digests": [
+        "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9"
+      ]
+    },
+    "evidence": {
+      "roots": [
+        "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9"
+      ],
+      "bundles": [
+        {
+          "digest": "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "chain_observation",
+            "claim": {
+              "predicate": "transfer-observed",
+              "value": {
+                "state": "known",
+                "type": "boolean",
+                "value": true
+              },
+              "limitations": []
+            },
+            "provenance": "observed",
+            "observed_at": 1700000010,
+            "validity": {
+              "type": "chain",
+              "chain_id": "4663",
+              "block_number": "42",
+              "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "block_timestamp": 1700000000,
+              "transaction_hash": null,
+              "log_index": null,
+              "finality": "safe",
+              "canonicality": "canonical",
+              "window": {
+                "start": 1699999990,
+                "end": 1700000000
+              },
+              "expires_at": 1700007200
+            },
+            "sources": [
+              {
+                "source_id": "rpc-log",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": ["rpc-log"],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        }
+      ]
+    },
+    "max_cost": {
+      "unit": "earned_credit",
+      "amount": "0"
+    }
+  },
+  "canonical": "{\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://gossip.example/\",\"auth_profile\":\"gossip-eip191-v2\",\"endpoint\":\"https://gossip.example/mcp/\",\"evidence\":{\"bundles\":[{\"digest\":\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":true}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"chain_observation\",\"observed_at\":1700000010,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"rpc-log\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"block_hash\":\"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"block_number\":\"42\",\"block_timestamp\":1700000000,\"canonicality\":\"canonical\",\"chain_id\":\"4663\",\"expires_at\":1700007200,\"finality\":\"safe\",\"log_index\":null,\"transaction_hash\":null,\"type\":\"chain\",\"window\":{\"end\":1700000000,\"start\":1699999990}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"rpc-log\"]}}}],\"roots\":[\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\"]},\"max_cost\":{\"amount\":\"0\",\"unit\":\"earned_credit\"},\"operation_id\":\"public-submit-1\",\"operation_kind\":\"public_submission\",\"protocol\":\"gossip/2-draft.1\",\"result\":{\"evidence_digests\":[\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\"],\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.result.v2\",\"schema_revision\":\"2026-09-09\",\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"}},\"schema\":\"gossip.public-submission.v1\",\"schema_revision\":\"2026-09-11\"}",
+  "digest": "sha256:9d3367fa8deb82e8e764375a998dffa66a10408e43c6c36a63c0a5ef4f2894f9"
+}

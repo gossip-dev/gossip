@@ -1,0 +1,167 @@
+{
+  "policy": {
+    "schema": "gossip.privacy-policy.v1",
+    "protocol": "gossip/2-draft.1",
+    "revision": "private-evidence-synthetic-2026-09-10",
+    "activation": "blocked_pending_approval",
+    "product_approved": false,
+    "raw_private_evidence": "offchain_encrypted_owner_scoped",
+    "public_commitment_default": "forbidden_without_consent",
+    "data_classes": [
+      {
+        "name": "private_payload",
+        "retention_seconds": 2592000,
+        "retention_clock": "stored_at",
+        "export": "full",
+        "deletion": "delete_payload_keep_tombstone",
+        "hold": "defer_deletion",
+        "immutable_history_exception": "none"
+      },
+      {
+        "name": "public_envelope",
+        "retention_seconds": 31557600,
+        "retention_clock": "published_at",
+        "export": "metadata",
+        "deletion": "retain_integrity_record",
+        "hold": "not_applicable",
+        "immutable_history_exception": "published_commitment"
+      },
+      {
+        "name": "operation",
+        "retention_seconds": 31557600,
+        "retention_clock": "accepted_at",
+        "export": "metadata",
+        "deletion": "retain_integrity_record",
+        "hold": "not_applicable",
+        "immutable_history_exception": "accepted_operation"
+      },
+      {
+        "name": "receipt",
+        "retention_seconds": 31557600,
+        "retention_clock": "issued_at",
+        "export": "metadata",
+        "deletion": "retain_integrity_record",
+        "hold": "not_applicable",
+        "immutable_history_exception": "signed_receipt"
+      },
+      {
+        "name": "quarantine_record",
+        "retention_seconds": 604800,
+        "retention_clock": "quarantined_at",
+        "export": "metadata",
+        "deletion": "delete_at_retention",
+        "hold": "defer_deletion",
+        "immutable_history_exception": "none"
+      },
+      {
+        "name": "access_audit",
+        "retention_seconds": 7776000,
+        "retention_clock": "occurred_at",
+        "export": "metadata",
+        "deletion": "delete_at_retention",
+        "hold": "defer_deletion",
+        "immutable_history_exception": "none"
+      },
+      {
+        "name": "aggregate_metric",
+        "retention_seconds": 2592000,
+        "retention_clock": "window_end",
+        "export": "none",
+        "deletion": "aggregate_only",
+        "hold": "not_applicable",
+        "immutable_history_exception": "none"
+      }
+    ],
+    "owner_operations": [
+      {
+        "action": "export",
+        "idempotent": true,
+        "unavailable_error": "privacy_unavailable",
+        "outcomes": ["exported", "unavailable"]
+      },
+      {
+        "action": "delete",
+        "idempotent": true,
+        "unavailable_error": "privacy_unavailable",
+        "outcomes": [
+          "deleted",
+          "already_deleted",
+          "held",
+          "immutable",
+          "unavailable"
+        ]
+      },
+      {
+        "action": "correct",
+        "idempotent": true,
+        "unavailable_error": "privacy_unavailable",
+        "outcomes": ["corrected", "already_corrected", "unavailable"]
+      },
+      {
+        "action": "access_audit",
+        "idempotent": true,
+        "unavailable_error": "privacy_unavailable",
+        "outcomes": ["returned", "unavailable"]
+      }
+    ]
+  },
+  "operation_vectors": [
+    {
+      "canonical": "{\"action\":{\"kind\":\"export\",\"scope\":\"all\"},\"operation_id\":\"export-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"requested_at\":1700000300,\"schema\":\"gossip.privacy-operation.v1\"}",
+      "digest": "sha256:9eaf254a7528d9c53a2d3c892539be4ba2743fea104744b43f422be4fd25e853"
+    },
+    {
+      "canonical": "{\"action\":{\"evidence_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"kind\":\"delete\"},\"operation_id\":\"delete-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"requested_at\":1700000300,\"schema\":\"gossip.privacy-operation.v1\"}",
+      "digest": "sha256:dce23dcaf7ddef7c2126ad3e2f876685fa527920b82d5ac6725c0a8f81dcf08a"
+    },
+    {
+      "canonical": "{\"action\":{\"correction_digest\":\"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"evidence_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"kind\":\"correct\"},\"operation_id\":\"correct-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"requested_at\":1700000300,\"schema\":\"gossip.privacy-operation.v1\"}",
+      "digest": "sha256:27865dccb552d8ff6f22f949cdbb14f0f9f4f5ec2c31fab42933157718393f62"
+    },
+    {
+      "canonical": "{\"action\":{\"kind\":\"access_audit\",\"since\":1700000000,\"until\":1700000300},\"operation_id\":\"audit-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"requested_at\":1700000300,\"schema\":\"gossip.privacy-operation.v1\"}",
+      "digest": "sha256:ba1025bd0be6e74a89dbc2e1175b0d99fa4e45f7b16a0d4a27d74f60c61c2d2b"
+    }
+  ],
+  "result_vectors": [
+    {
+      "kind": "deletion",
+      "canonical": "{\"operation_id\":\"delete-1\",\"outcome\":\"deleted\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.privacy-deletion-result.v1\",\"tombstone\":{\"deleted_at\":1700000310,\"deletion_operation_id\":\"delete-1\",\"evidence_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"reason\":\"owner_deletion\",\"schema\":\"gossip.privacy-tombstone.v1\"}}"
+    },
+    {
+      "kind": "deletion",
+      "canonical": "{\"operation_id\":\"delete-1\",\"outcome\":\"already_deleted\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.privacy-deletion-result.v1\",\"tombstone\":{\"deleted_at\":1700000310,\"deletion_operation_id\":\"delete-1\",\"evidence_digest\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"reason\":\"owner_deletion\",\"schema\":\"gossip.privacy-tombstone.v1\"}}"
+    },
+    {
+      "kind": "deletion",
+      "canonical": "{\"operation_id\":\"delete-1\",\"outcome\":\"held\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.privacy-deletion-result.v1\"}"
+    },
+    {
+      "kind": "correction",
+      "canonical": "{\"correction_digests\":[\"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"],\"operation_id\":\"correct-1\",\"outcome\":\"corrected\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.privacy-correction-result.v1\"}"
+    },
+    {
+      "kind": "correction",
+      "canonical": "{\"correction_digests\":[\"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"],\"operation_id\":\"correct-1\",\"outcome\":\"already_corrected\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-evidence-synthetic-2026-09-10\",\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.privacy-correction-result.v1\"}"
+    }
+  ],
+  "signed_consent": {
+    "consent": {
+      "schema": "gossip.publication-consent.v1",
+      "protocol": "gossip/2-draft.1",
+      "policy_revision": "private-evidence-synthetic-2026-09-10",
+      "owner": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "evidence_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "disclosures": ["public_commitment", "linkable_identity"],
+      "issued_at": 1800000000,
+      "expires_at": 1800000300
+    },
+    "consent_digest": "sha256:88b08d082969d557a89a9bf372cf89d2dbe043217ea9e37ae949c894e831c3f9",
+    "root_public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+    "signature": "0x21dc8df9e7810b637559802b5a3238cf641d39d9a880479b39779b294acb335f1fb7204289ad2d119f5c34add535275071ac325f12a29c40caf439641a186bca1c"
+  },
+  "consent_message": "Gossip publication consent v1\ngossip/2-draft.1\ngossip.publication-consent.v1\nsha256:88b08d082969d557a89a9bf372cf89d2dbe043217ea9e37ae949c894e831c3f9"
+}

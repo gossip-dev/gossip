@@ -1,0 +1,14 @@
+{
+  "body": "{\"hello\":\"world\",\"nonce\":1}",
+  "audience": "https://engine.test/",
+  "endpoint": "https://engine.test/mcp",
+  "method": "POST",
+  "target": "/mcp",
+  "nonce": "00000000-0000-4000-8000-000000000001",
+  "expires": "1800000240",
+  "digest": "sha256:15b3fc8075419c12dc0aa1b42be979db561cf28ba27e91122da9debf9a5118f6",
+  "message": "Gossip request v2\ngossip/2-draft.1\ngossip-eip191-v2\nhttps://engine.test/\nhttps://engine.test/mcp\nPOST\n/mcp\nsha256:15b3fc8075419c12dc0aa1b42be979db561cf28ba27e91122da9debf9a5118f6\n00000000-0000-4000-8000-000000000001\n1800000240",
+  "public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+  "signature": "0x759b2d2506c2d3aedb81c1cbf6dd0d1ff00736340e654447d94249a2d356ed6f655d363660f3341f3e6b251d1acc585deae934649a1c7784fbc11bee719013891c",
+  "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+}

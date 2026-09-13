@@ -1,0 +1,326 @@
+{
+  "first_grant": {
+    "grant": {
+      "schema": "gossip.identity-session.v1",
+      "protocol": "gossip/2-draft.1",
+      "root": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "session": {
+        "key_id": "session-1",
+        "public_key": "0x04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a",
+        "address": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf"
+      },
+      "endpoint": "https://engine.test/mcp",
+      "audience": "https://engine.test/",
+      "tools": [
+        "gossip_consult_v2",
+        "gossip_operation"
+      ],
+      "submission_kinds": [],
+      "max_cost": {
+        "unit": "earned_credit",
+        "amount": "0"
+      },
+      "issued_at": 1800000000,
+      "expires_at": 1800003600,
+      "previous": null
+    },
+    "grant_digest": "sha256:0b820a15d6a296ab09beaf3f5538a3e1ff1c1ac6be29222a3adfb5b60da5105b",
+    "root_public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+    "signature": "0x63d3ea8508f3ac06b79046c834868db889381e731aa380c4f51bc6d8e5caf6872da17bb828d3838717ffc1afca4d5b1e3f2532e947c18083662aaca9d9e3c4c81c"
+  },
+  "first_message": "Gossip identity session v1\ngossip/2-draft.1\ngossip-eip191-identity-session-v1\nsha256:0b820a15d6a296ab09beaf3f5538a3e1ff1c1ac6be29222a3adfb5b60da5105b",
+  "rotated_grant": {
+    "grant": {
+      "schema": "gossip.identity-session.v1",
+      "protocol": "gossip/2-draft.1",
+      "root": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "session": {
+        "key_id": "session-2",
+        "public_key": "0x04f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9388f7b0f632de8140fe337e62a37f3566500a99934c2231b6cb9fd7584b8e672",
+        "address": "0x6813eb9362372eef6200f3b1dbc3f819671cba69"
+      },
+      "endpoint": "https://engine.test/mcp",
+      "audience": "https://engine.test/",
+      "tools": [
+        "gossip_operation"
+      ],
+      "submission_kinds": [],
+      "max_cost": {
+        "unit": "earned_credit",
+        "amount": "0"
+      },
+      "issued_at": 1800000100,
+      "expires_at": 1800003700,
+      "previous": {
+        "key_id": "session-1",
+        "grant_digest": "sha256:0b820a15d6a296ab09beaf3f5538a3e1ff1c1ac6be29222a3adfb5b60da5105b"
+      }
+    },
+    "grant_digest": "sha256:995e39b5b253b748bb112f1aaffa1a65a7ba29bdd82cdb80ffa7da35ac634697",
+    "root_public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+    "signature": "0xf0724d24660a4cde6f4ddfbfefdb1c8f8b0d1e47f059b69f219246e908b4e02b32d7acdb626ea4c3340a37fc0d66efa8f4e5645583f9931462f7b42fa61b76b31b"
+  },
+  "rotated_message": "Gossip identity session v1\ngossip/2-draft.1\ngossip-eip191-identity-session-v1\nsha256:995e39b5b253b748bb112f1aaffa1a65a7ba29bdd82cdb80ffa7da35ac634697",
+  "revocation": {
+    "revocation": {
+      "schema": "gossip.identity-session-revocation.v1",
+      "protocol": "gossip/2-draft.1",
+      "root": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "key_id": "session-2",
+      "grant_digest": "sha256:995e39b5b253b748bb112f1aaffa1a65a7ba29bdd82cdb80ffa7da35ac634697",
+      "revoked_at": 1800000200
+    },
+    "revocation_digest": "sha256:d44b12443fab2c8548d6544285fcb6bf9f8220d5ece6d53189f3b813215c017b",
+    "root_public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+    "signature": "0x2139e6c5651e5975cc49f6ad3912d131b4cc29004aed2354630b8b7955aeb9c03b90cd183614a0a7709956a4333667744fa4fc23cf0d2dc2cf520ca18fac71d21b"
+  },
+  "revocation_message": "Gossip identity session revocation v1\ngossip/2-draft.1\ngossip-eip191-identity-session-v1\nsha256:d44b12443fab2c8548d6544285fcb6bf9f8220d5ece6d53189f3b813215c017b",
+  "session_request": {
+    "audience": "https://engine.test/",
+    "endpoint": "https://engine.test/mcp",
+    "method": "POST",
+    "target": "/mcp",
+    "body": "{\"cost\":{\"amount\":\"0\",\"unit\":\"earned_credit\"},\"key_id\":\"session-1\",\"payload\":{\"actor\":{\"address\":\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"capability\":\"wallet_overview\",\"deadline\":1800000300,\"endpoint\":\"https://engine.test/mcp\",\"max_cost\":{\"amount\":\"0\",\"unit\":\"earned_credit\"},\"operation_id\":\"fixture-consultation\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"allow_partial\":false,\"finality\":\"safe\",\"max_age_seconds\":0,\"tier\":\"standard\"},\"schema_revision\":\"2026-09-09\",\"subject\":{\"address\":\"0x2b5ad5c4795c026514f8317c7a215e218dccd6cf\",\"chain_id\":\"4663\",\"kind\":\"wallet\"}},\"protocol\":\"gossip/2-draft.1\",\"root\":{\"address\":\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"chain_id\":\"4663\"},\"schema\":\"gossip.identity-session-request.v1\",\"submission_kind\":null,\"tool\":\"gossip_consult_v2\"}",
+    "nonce": "00000000-0000-4000-8000-000000000001",
+    "expires": "1800000400",
+    "request": {
+      "schema": "gossip.identity-session-request.v1",
+      "protocol": "gossip/2-draft.1",
+      "root": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "key_id": "session-1",
+      "tool": "gossip_consult_v2",
+      "submission_kind": null,
+      "cost": {
+        "unit": "earned_credit",
+        "amount": "0"
+      },
+      "payload": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "auth_profile": "gossip-eip191-v2",
+        "operation_id": "fixture-consultation",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+        },
+        "subject": {
+          "kind": "wallet",
+          "chain_id": "4663",
+          "address": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf"
+        },
+        "capability": "wallet_overview",
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "quality": {
+          "tier": "standard",
+          "max_age_seconds": 0,
+          "finality": "safe",
+          "allow_partial": false
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "0"
+        },
+        "deadline": 1800000300
+      }
+    },
+    "body_digest": "sha256:90b5be098798ce89d92e5e14f843156e70817c930dd886abbf398e79c863addb",
+    "message": "Gossip request v2\ngossip/2-draft.1\ngossip-eip191-v2\nhttps://engine.test/\nhttps://engine.test/mcp\nPOST\n/mcp\nsha256:90b5be098798ce89d92e5e14f843156e70817c930dd886abbf398e79c863addb\n00000000-0000-4000-8000-000000000001\n1800000400",
+    "public_key": "0x04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a",
+    "address": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf",
+    "signature": "0xad6da4e09bb3b02a9dc4358bc96eff1ea87b89edbbcdfbc0b36956a337b5acdd150b7295670a5371187a95a7894fbcc5485dd120548059e2d4bb1979ec1babb81c"
+  },
+  "public_submission_session": {
+    "grant": {
+      "grant": {
+        "schema": "gossip.identity-session.v1",
+        "protocol": "gossip/2-draft.1",
+        "root": {
+          "chain_id": "4663",
+          "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+        },
+        "session": {
+          "key_id": "session-1",
+          "public_key": "0x04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a",
+          "address": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "tools": [
+          "gossip_submit_v2"
+        ],
+        "submission_kinds": [
+          "public_submission"
+        ],
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "0"
+        },
+        "issued_at": 1800000000,
+        "expires_at": 1800003600,
+        "previous": null
+      },
+      "grant_digest": "sha256:1ddc96c920ab2070e76eecf190f31a98f17f9b188d6aeed7242d44ee1d9d3ddb",
+      "root_public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+      "signature": "0x1eeed1960d6e38a87004af33750b6a719a743f1b4c78fced92ba2f5da46779ca7bbcb6acb1304b6f9baeff3166e6408ae0461f5fcc1d57c16ce3a45f52a2dc531c"
+    },
+    "request": {
+      "schema": "gossip.identity-session-request.v1",
+      "protocol": "gossip/2-draft.1",
+      "root": {
+        "chain_id": "4663",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf"
+      },
+      "key_id": "session-1",
+      "tool": "gossip_submit_v2",
+      "submission_kind": "public_submission",
+      "cost": {
+        "unit": "earned_credit",
+        "amount": "0"
+      },
+      "payload": {
+        "actor": {
+          "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+          "chain_id": "4663"
+        },
+        "audience": "https://engine.test/",
+        "auth_profile": "gossip-eip191-v2",
+        "endpoint": "https://engine.test/mcp",
+        "evidence": {
+          "bundles": [
+            {
+              "digest": "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9",
+              "evidence": {
+                "access": {
+                  "visibility": "public"
+                },
+                "claim": {
+                  "limitations": [],
+                  "predicate": "transfer-observed",
+                  "value": {
+                    "state": "known",
+                    "type": "boolean",
+                    "value": true
+                  }
+                },
+                "confidence": [
+                  {
+                    "assessment": "supported",
+                    "component": "reproducibility",
+                    "explanation": "The immutable source revision is declared."
+                  }
+                ],
+                "conflicts_with": [],
+                "correction_reason": null,
+                "derived_from": [],
+                "kind": "chain_observation",
+                "observed_at": 1700000010,
+                "protocol": "gossip/2-draft.1",
+                "provenance": "observed",
+                "schema": "gossip.evidence.v1",
+                "schema_revision": "2026-09-09",
+                "sources": [
+                  {
+                    "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    "location": {
+                      "uri": "https://evidence.test/source.json",
+                      "visibility": "public"
+                    },
+                    "revision": "rev-1",
+                    "source_id": "rpc-log"
+                  }
+                ],
+                "subject": {
+                  "address": "0x2222222222222222222222222222222222222222",
+                  "chain_id": "4663",
+                  "kind": "token"
+                },
+                "supersedes": null,
+                "validity": {
+                  "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "block_number": "42",
+                  "block_timestamp": 1700000000,
+                  "canonicality": "canonical",
+                  "chain_id": "4663",
+                  "expires_at": 1700007200,
+                  "finality": "safe",
+                  "log_index": null,
+                  "transaction_hash": null,
+                  "type": "chain",
+                  "window": {
+                    "end": 1700000000,
+                    "start": 1699999990
+                  }
+                },
+                "verification": {
+                  "instructions": "Hash the exact immutable source bytes and compare the declared fields.",
+                  "method": "sha256-json",
+                  "mode": "replay",
+                  "revision": "v1",
+                  "source_ids": [
+                    "rpc-log"
+                  ]
+                }
+              }
+            }
+          ],
+          "roots": [
+            "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9"
+          ]
+        },
+        "max_cost": {
+          "amount": "0",
+          "unit": "earned_credit"
+        },
+        "operation_id": "fixture-public-submission-session",
+        "operation_kind": "public_submission",
+        "protocol": "gossip/2-draft.1",
+        "result": {
+          "evidence_digests": [
+            "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9"
+          ],
+          "protocol": "gossip/2-draft.1",
+          "schema": "gossip.result.v2",
+          "schema_revision": "2026-09-09",
+          "subject": {
+            "address": "0x2222222222222222222222222222222222222222",
+            "chain_id": "4663",
+            "kind": "token"
+          }
+        },
+        "schema": "gossip.public-submission.v1",
+        "schema_revision": "2026-09-11"
+      }
+    },
+    "body": "{\"cost\":{\"amount\":\"0\",\"unit\":\"earned_credit\"},\"key_id\":\"session-1\",\"payload\":{\"actor\":{\"address\":\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"endpoint\":\"https://engine.test/mcp\",\"evidence\":{\"bundles\":[{\"digest\":\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":true}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"chain_observation\",\"observed_at\":1700000010,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"rpc-log\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"block_hash\":\"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"block_number\":\"42\",\"block_timestamp\":1700000000,\"canonicality\":\"canonical\",\"chain_id\":\"4663\",\"expires_at\":1700007200,\"finality\":\"safe\",\"log_index\":null,\"transaction_hash\":null,\"type\":\"chain\",\"window\":{\"end\":1700000000,\"start\":1699999990}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"rpc-log\"]}}}],\"roots\":[\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\"]},\"max_cost\":{\"amount\":\"0\",\"unit\":\"earned_credit\"},\"operation_id\":\"fixture-public-submission-session\",\"operation_kind\":\"public_submission\",\"protocol\":\"gossip/2-draft.1\",\"result\":{\"evidence_digests\":[\"sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9\"],\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.result.v2\",\"schema_revision\":\"2026-09-09\",\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"}},\"schema\":\"gossip.public-submission.v1\",\"schema_revision\":\"2026-09-11\"},\"protocol\":\"gossip/2-draft.1\",\"root\":{\"address\":\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"chain_id\":\"4663\"},\"schema\":\"gossip.identity-session-request.v1\",\"submission_kind\":\"public_submission\",\"tool\":\"gossip_submit_v2\"}",
+    "body_digest": "sha256:55e1af9387300c1bca0e74f658568b39054b1a0d37019ac055f2e6418bce32ed",
+    "audience": "https://engine.test/",
+    "endpoint": "https://engine.test/mcp",
+    "method": "POST",
+    "target": "/mcp",
+    "nonce": "00000000-0000-4000-8000-000000000002",
+    "expires": "1800000400",
+    "public_key": "0x04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a",
+    "address": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf",
+    "signature": "0xf3bd9e95321827c3c3e912aa70accca35be00ad334ab8dad7d758d5266619b5118ed461715f52768f3d841bb8be237572a895706535bfdc77700d56993df82be1b",
+    "headers": {
+      "X-Gossip-Auth-Profile": "gossip-eip191-v2",
+      "X-Gossip-Public-Key": "0x04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a",
+      "X-Gossip-Signature": "0xf3bd9e95321827c3c3e912aa70accca35be00ad334ab8dad7d758d5266619b5118ed461715f52768f3d841bb8be237572a895706535bfdc77700d56993df82be1b",
+      "X-Gossip-Nonce": "00000000-0000-4000-8000-000000000002",
+      "X-Gossip-Expires": "1800000400"
+    }
+  }
+}

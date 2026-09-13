@@ -1,0 +1,81 @@
+{
+  "valid": {
+    "protocol": "gossip/2-draft.1",
+    "schema_revision": "2026-09-11",
+    "schema": "gossip.public-evidence-document.v1",
+    "digest": "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9",
+    "evidence": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-09",
+      "schema": "gossip.evidence.v1",
+      "subject": {
+        "kind": "token",
+        "chain_id": "4663",
+        "address": "0x2222222222222222222222222222222222222222"
+      },
+      "kind": "chain_observation",
+      "claim": {
+        "predicate": "transfer-observed",
+        "value": {
+          "state": "known",
+          "type": "boolean",
+          "value": true
+        },
+        "limitations": []
+      },
+      "provenance": "observed",
+      "observed_at": 1700000010,
+      "validity": {
+        "type": "chain",
+        "chain_id": "4663",
+        "block_number": "42",
+        "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "block_timestamp": 1700000000,
+        "transaction_hash": null,
+        "log_index": null,
+        "finality": "safe",
+        "canonicality": "canonical",
+        "window": {
+          "start": 1699999990,
+          "end": 1700000000
+        },
+        "expires_at": 1700007200
+      },
+      "sources": [
+        {
+          "source_id": "rpc-log",
+          "revision": "rev-1",
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "location": {
+            "visibility": "public",
+            "uri": "https://evidence.test/source.json"
+          }
+        }
+      ],
+      "verification": {
+        "mode": "replay",
+        "method": "sha256-json",
+        "revision": "v1",
+        "source_ids": [
+          "rpc-log"
+        ],
+        "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+      },
+      "confidence": [
+        {
+          "component": "reproducibility",
+          "assessment": "supported",
+          "explanation": "The immutable source revision is declared."
+        }
+      ],
+      "access": {
+        "visibility": "public"
+      },
+      "derived_from": [],
+      "supersedes": null,
+      "correction_reason": null,
+      "conflicts_with": []
+    },
+    "links": []
+  }
+}

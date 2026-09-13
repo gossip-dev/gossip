@@ -1,0 +1,87 @@
+{
+  "name": "@gossip/agent-kit",
+  "version": "0.1.0-dev.1",
+  "description": "User-controlled Gossip identity and agent tools",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "bin": {
+    "gossip": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "README.md",
+    "LICENSE",
+    "scripts/install.mjs",
+    "docs",
+    "scripts/bootstrap-linux.sh",
+    "scripts/verify-v2-vectors.py",
+    "scripts/verify-v2-evidence-receipts.py",
+    "scripts/verify-v2-http-auth.py",
+    "scripts/verify-v2-identity-session.py",
+    "scripts/verify-v2-privacy.py",
+    "scripts/verify-v2-public-submission.py",
+    "scripts/verify-v2-public-submission-receipt.py",
+    "scripts/verify-v2-public-evidence-document.py",
+    "scripts/verify-v2-conformance-manifest.py",
+    "scripts/verify-ws7-production-manifest.mjs",
+    "scripts/release-provenance.mjs",
+    "scripts/verify-release-provenance.mjs",
+    "scripts/run-v2-conformance.mjs",
+    "scripts/conformance-runner-options.mjs",
+    "scripts/process-capture.mjs",
+    "test/fixtures/v2-canonical.json",
+    "test/fixtures/v2-evidence-receipts.json",
+    "test/fixtures/v2-receipt-auth.json",
+    "test/fixtures/v2-http-auth.json",
+    "test/fixtures/v2-identity-session.json",
+    "test/fixtures/v2-privacy.json",
+    "test/fixtures/v2-public-submission.json",
+    "test/fixtures/v2-public-submission-receipt.json",
+    "test/fixtures/v2-public-evidence-document.json",
+    "test/fixtures/v2-conformance.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
+    "test:protocol-v2": "tsx --test test/canonical.test.ts test/protocol-v2.test.ts test/protocol-v2-vectors.test.ts",
+    "test:receipt-auth": "tsx --test test/receipt-auth.test.ts",
+    "test:linux-secret-service": "tsx --test test/linux-secret-service.test.ts",
+    "verify:protocol-v2": "python scripts/verify-v2-vectors.py",
+    "verify:evidence-v2": "python scripts/verify-v2-evidence-receipts.py",
+    "verify:http-auth-v2": "python scripts/verify-v2-http-auth.py",
+    "verify:identity-session-v2": "python scripts/verify-v2-identity-session.py",
+    "verify:privacy-v2": "python scripts/verify-v2-privacy.py",
+    "verify:public-submission-v2": "python scripts/verify-v2-public-submission.py",
+    "verify:public-submission-receipt-v2": "python scripts/verify-v2-public-submission-receipt.py",
+    "verify:public-evidence-document-v2": "python scripts/verify-v2-public-evidence-document.py",
+    "verify:conformance-v2": "python scripts/verify-v2-conformance-manifest.py",
+    "verify:ws7-manifest": "node scripts/verify-ws7-production-manifest.mjs",
+    "conformance:v2:offline": "node scripts/run-v2-conformance.mjs",
+    "release:provenance": "node scripts/release-provenance.mjs",
+    "verify:release-provenance": "node scripts/verify-release-provenance.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@slicekit/erc8128": "0.4.1",
+    "ethers": "6.17.0",
+    "yaml": "2.9.0",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@foundry-rs/anvil": "1.7.1",
+    "@types/node": "24.13.3",
+    "prettier": "3.6.2",
+    "solc": "0.8.36",
+    "tsx": "4.23.13",
+    "typescript": "7.0.2"
+  },
+  "overrides": {
+    "tmp": "0.2.7"
+  },
+  "bundleDependencies": true
+}

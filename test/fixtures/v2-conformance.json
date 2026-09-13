@@ -1,0 +1,243 @@
+{
+  "schema": "gossip.acceptance-envelope.v1",
+  "statement": {
+    "schema": "gossip.acceptance-statement.v1",
+    "suite_revision": "gossip-v2-conformance-2026-09-11.12",
+    "protocol": "gossip/2-draft.1",
+    "generated_at": 1800000000,
+    "source": {
+      "repository": "https://github.com/gossip-dev/gossip",
+      "commit": "1111111111111111111111111111111111111111",
+      "dirty": false
+    },
+    "artifacts": {
+      "gossip": {
+        "package": "@gossip/agent-kit",
+        "version": "0.1.0-dev.1",
+        "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bytes": 14932924
+      },
+      "sherwood": {
+        "repository": "https://github.com/gossip-dev/sherwood",
+        "commit": null,
+        "assembly": null,
+        "image_digest": null
+      }
+    },
+    "runtime": {
+      "os": "win32",
+      "architecture": "x64",
+      "node": "24.13.1",
+      "npm": "11.8.0",
+      "python": "3.13.5",
+      "dotnet": null,
+      "docker": null,
+      "postgresql": null
+    },
+    "revisions": {
+      "schema": "2026-09-09",
+      "auth": "gossip-eip191-v2",
+      "mcp": "2025-11-25",
+      "engine": null,
+      "database_migrations": null,
+      "fixture_suite": "gossip-v2-fixtures-1"
+    },
+    "fixtures": [
+      {
+        "name": "canonical-vectors",
+        "path": "test/fixtures/v2-canonical.json",
+        "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "bytes": 4096
+      },
+      {
+        "name": "public-evidence-document",
+        "path": "test/fixtures/v2-public-evidence-document.json",
+        "sha256": "sha256:75fb6d5dc8aa29c4b285a70109e0f61029f24a73fea0a2c2c1d17e1f80a1465c",
+        "bytes": 2314
+      },
+      {
+        "name": "identity-session",
+        "path": "test/fixtures/v2-identity-session.json",
+        "sha256": "sha256:22b6f837f8b81a370ffc41508c9153497ec360551ab1f156ea4aeeb97bcaa4e2",
+        "bytes": 17762
+      }
+    ],
+    "scenarios": [
+      {
+        "id": "artifact_install",
+        "status": "verified",
+        "assertions": 3,
+        "evidence": [
+          {
+            "path": "evidence/artifact-install.json",
+            "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "bytes": 512
+          }
+        ]
+      },
+      {
+        "id": "installed_cli_process",
+        "status": "verified",
+        "assertions": 2,
+        "evidence": [
+          {
+            "path": "evidence/installed-cli.json",
+            "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "bytes": 256
+          }
+        ]
+      },
+      {
+        "id": "mcp_http_parity",
+        "status": "blocked",
+        "reason": "No packaged Sherwood process was exercised.",
+        "next_action": "Run both transports against one pinned Sherwood artifact."
+      },
+      {
+        "id": "authentication_fail_closed",
+        "status": "blocked",
+        "reason": "Authentication faults were not exercised end to end.",
+        "next_action": "Run the signed tamper, replay, expiry and downgrade matrix."
+      },
+      {
+        "id": "session_scope_escape",
+        "status": "blocked",
+        "reason": "No packaged Sherwood session process was exercised.",
+        "next_action": "Run the pinned Sherwood session process gate."
+      },
+      {
+        "id": "public_submission_transport",
+        "status": "blocked",
+        "reason": "No packaged public-submission process was exercised.",
+        "next_action": "Run signed public submission, exact evidence retrieval, restart, correction, and scoped-session checks through both transports."
+      },
+      {
+        "id": "operation_exactly_once",
+        "status": "blocked",
+        "reason": "The 100-request process scenario was not run.",
+        "next_action": "Run 100 identical signed requests through the packaged process."
+      },
+      {
+        "id": "operation_conflict",
+        "status": "blocked",
+        "reason": "The packaged process conflict path was not run.",
+        "next_action": "Reuse one operation ID with different canonical content."
+      },
+      {
+        "id": "zero_cost_reconciliation",
+        "status": "blocked",
+        "reason": "Crash and timeout reconciliation was not run.",
+        "next_action": "Inject restart and timeout around standard zero-cost work."
+      },
+      {
+        "id": "persistence_fault_recovery",
+        "status": "blocked",
+        "reason": "No packaged-process persistence fault scenario was exercised.",
+        "next_action": "Exercise frozen test-only persistence cut points."
+      },
+      {
+        "id": "evidence_finality_reorg",
+        "status": "blocked",
+        "reason": "Controlled-chain evidence faults were not run through both transports.",
+        "next_action": "Run stale, wrong-chain, missing-source and reorg fixtures."
+      },
+      {
+        "id": "correction_supersession",
+        "status": "blocked",
+        "reason": "Correction lineage was not run through the packaged process.",
+        "next_action": "Run conflict, correction and supersession fixtures."
+      },
+      {
+        "id": "owner_isolation",
+        "status": "blocked",
+        "reason": "The complete private owner lifecycle is not implemented by Sherwood.",
+        "next_action": "Exercise operation, receipt, evidence, export, deletion and audit isolation."
+      },
+      {
+        "id": "privacy_canary_scan",
+        "status": "blocked",
+        "reason": "No captured process output was scanned.",
+        "next_action": "Scan isolated captures with prohibited synthetic canaries."
+      },
+      {
+        "id": "independent_vectors",
+        "status": "verified",
+        "assertions": 6,
+        "evidence": [
+          {
+            "path": "evidence/independent-vectors.json",
+            "sha256": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "bytes": 1024
+          }
+        ]
+      },
+      {
+        "id": "clean_checkout_reproduction",
+        "status": "blocked",
+        "reason": "This is a literal blocked fixture, not a replayed run.",
+        "next_action": "Replay the pinned sources and compare scenario decisions."
+      }
+    ],
+    "capabilities": [
+      {
+        "name": "atomic_consult",
+        "state": "installed",
+        "reason": "Contract code is installed without packaged engine evidence.",
+        "next_action": "Pass operation, economics and fault scenarios."
+      },
+      {
+        "name": "durable_operations",
+        "state": "installed",
+        "reason": "Contract code is installed without packaged database evidence.",
+        "next_action": "Pass restart, conflict and exactly-once scenarios."
+      },
+      {
+        "name": "signed_receipts",
+        "state": "installed",
+        "reason": "The verifier is installed without a production trust path.",
+        "next_action": "Verify packaged receipt issuance and the pinned trust anchor."
+      },
+      {
+        "name": "evidence",
+        "state": "installed",
+        "reason": "Evidence contracts are installed without end-to-end reproduction.",
+        "next_action": "Pass controlled evidence and independent reproduction scenarios."
+      },
+      {
+        "name": "session_keys",
+        "state": "blocked",
+        "reason": "The portable contract is installed without packaged server session evidence.",
+        "next_action": "Run the pinned Sherwood session process gate."
+      },
+      {
+        "name": "public_submission",
+        "state": "blocked",
+        "reason": "The portable contract is installed without packaged public-submission process evidence.",
+        "next_action": "Run the pinned Sherwood public-submission process gate."
+      },
+      {
+        "name": "private_submission",
+        "state": "blocked",
+        "reason": "Encrypted owner-scoped storage is not proven.",
+        "next_action": "Pass the approved private lifecycle and privacy scan."
+      },
+      {
+        "name": "http",
+        "state": "installed",
+        "reason": "The inactive adapter has no packaged-process acceptance.",
+        "next_action": "Pass MCP and HTTP semantic parity against one process."
+      },
+      {
+        "name": "tasks",
+        "state": "not_applicable",
+        "reason": "MCP Tasks are outside the current core profile.",
+        "next_action": "Negotiate a separately pinned Tasks profile before use."
+      }
+    ],
+    "decision": "blocked"
+  },
+  "content_address": {
+    "algorithm": "sha256",
+    "digest": "sha256:af9e1d6c4f1cc95e361f9ec4efb899dfc53075162992e5ccb91085d7455c238f"
+  }
+}

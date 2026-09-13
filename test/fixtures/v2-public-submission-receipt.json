@@ -1,0 +1,64 @@
+{
+  "receipt": {
+    "receipt": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-11",
+      "schema": "gossip.public-submission-receipt.v1",
+      "auth_profile": "gossip-eip191-v2",
+      "operation_kind": "public_submission",
+      "operation_id": "public-submit-1",
+      "request_digest": "sha256:9d3367fa8deb82e8e764375a998dffa66a10408e43c6c36a63c0a5ef4f2894f9",
+      "actor": {
+        "chain_id": "4663",
+        "address": "0x1111111111111111111111111111111111111111"
+      },
+      "owner": {
+        "chain_id": "4663",
+        "address": "0x1111111111111111111111111111111111111111"
+      },
+      "endpoint": "https://gossip.example/mcp/",
+      "audience": "https://gossip.example/",
+      "server": {
+        "id": "sherwood",
+        "revision": "synthetic-v1"
+      },
+      "signing": {
+        "profile": "gossip-eip191-receipt-v1",
+        "key_id": "receipt-key-1"
+      },
+      "issued_at": 1800000000,
+      "status": "complete",
+      "max_cost": {
+        "unit": "earned_credit",
+        "amount": "0"
+      },
+      "economics": {
+        "unit": "earned_credit",
+        "state": "settled",
+        "reserved_amount": "0",
+        "charged_amount": "0"
+      },
+      "result_digest": "sha256:b89dbaae5180455a784d46b2322fbc08f4e028946b8a36e95ffec33d04155aae",
+      "evidence_digests": [
+        "sha256:51c3ad4b9413ba4b505bf678e3b95d101c7aea24f0425238b829800651a116f9"
+      ]
+    },
+    "receipt_digest": "sha256:97b40db97d268fcda631ee3fc94068ea4937088c6bdd55e7d4b04ffbefd8c5fa",
+    "signature": "T1WIJjjcYt4jqaMG3fgvC9vlnhtfPG9SDIlltmPo_C9oeuKBNyLBgDH6ZSdPjIhC9K3l9R2leLVfURimsoy_tBs"
+  },
+  "manifest": {
+    "schema": "gossip.receipt-trust-manifest.v1",
+    "server_id": "sherwood",
+    "profile": "gossip-eip191-receipt-v1",
+    "keys": [
+      {
+        "key_id": "receipt-key-1",
+        "public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+        "valid_from": 1799990000,
+        "valid_until": 1800003600,
+        "status": "active"
+      }
+    ]
+  }
+}

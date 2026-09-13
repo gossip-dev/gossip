@@ -1,0 +1,76 @@
+{
+  "manifest": {
+    "schema": "gossip.receipt-trust-manifest.v1",
+    "server_id": "sherwood",
+    "profile": "gossip-eip191-receipt-v1",
+    "keys": [
+      {
+        "key_id": "receipt-key-1",
+        "public_key": "0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8",
+        "address": "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf",
+        "valid_from": 1799990000,
+        "valid_until": 1800003600,
+        "status": "active"
+      }
+    ]
+  },
+  "receipt": {
+    "receipt": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-09",
+      "schema": "gossip.receipt.v2",
+      "auth_profile": "gossip-eip191-v2",
+      "kind": "acknowledgment",
+      "operation_id": "vector-operation-1",
+      "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+      "actor": {
+        "chain_id": "4663",
+        "address": "0x1111111111111111111111111111111111111111"
+      },
+      "owner": {
+        "chain_id": "4663",
+        "address": "0x1111111111111111111111111111111111111111"
+      },
+      "endpoint": "https://engine.test/mcp",
+      "audience": "https://engine.test/",
+      "server": {
+        "id": "sherwood",
+        "revision": "synthetic-v1"
+      },
+      "signing": {
+        "profile": "gossip-eip191-receipt-v1",
+        "key_id": "receipt-key-1"
+      },
+      "sequence": 0,
+      "previous_receipt_digest": null,
+      "accepted_at": 1800000000,
+      "issued_at": 1800000000,
+      "status": "pending",
+      "quality": {
+        "requested": {
+          "tier": "enriched",
+          "max_age_seconds": 3600,
+          "finality": "safe",
+          "allow_partial": true
+        },
+        "selected_tier": "enriched",
+        "unmet_requirements": []
+      },
+      "max_cost": {
+        "unit": "earned_credit",
+        "amount": "10"
+      },
+      "economics": {
+        "unit": "earned_credit",
+        "state": "reserved",
+        "reserved_amount": "10",
+        "charged_amount": null
+      },
+      "result_digest": null,
+      "error_code": null
+    },
+    "receipt_digest": "sha256:b192ea48b2f5e7474753329e36a87058dfed3457dd5c50b067355c3937e6e022",
+    "signature": "vCc2uUDkErXN9Q-DI3Ex5yIXOcA9CN8quyotQRULI8YjbuI6XbOcpdAjkcP2b1QqX0ar98XtyPntMAFSVVF0_hw"
+  },
+  "message": "Gossip receipt v1\ngossip/2-draft.1\nsha256:b192ea48b2f5e7474753329e36a87058dfed3457dd5c50b067355c3937e6e022"
+}

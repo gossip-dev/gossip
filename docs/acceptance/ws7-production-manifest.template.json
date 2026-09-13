@@ -1,0 +1,114 @@
+{
+  "schema": "gossip.ws7-production-acceptance.v1",
+  "result": "blocked",
+  "generated_at": null,
+  "release": {
+    "gossip_commit": null,
+    "sherwood_commit": null,
+    "package": "@gossip/agent-kit@0.1.0-dev.1",
+    "artifact_sha256": null,
+    "lockfile_sha256": null,
+    "provenance_run": null,
+    "release_tag": null
+  },
+  "deployment": {
+    "provider": "railway",
+    "environment": "production",
+    "service": "engine",
+    "deployment_id": null,
+    "image_digest": null,
+    "endpoint": "https://engine-production-c4d8.up.railway.app/mcp",
+    "audience": "https://engine-production-c4d8.up.railway.app/"
+  },
+  "contract": {
+    "protocol": "gossip/2-draft.1",
+    "schema_revision": "2026-09-09",
+    "authentication": "gossip-eip191-v2",
+    "mcp_revision": "2025-11-25"
+  },
+  "receipt_trust": {
+    "key_id": null,
+    "public_key": null,
+    "ethereum_address": null,
+    "valid_from": null,
+    "valid_until": null,
+    "manifest_digest": null
+  },
+  "production_checks": {
+    "signed_capabilities": { "passed": false, "evidence_sha256": null },
+    "standard_zero_cost_consultation": {
+      "passed": false,
+      "evidence_sha256": null
+    },
+    "evidence_reproduction": { "passed": false, "evidence_sha256": null },
+    "receipt_chain": { "passed": false, "evidence_sha256": null },
+    "exact_retry": { "passed": false, "evidence_sha256": null },
+    "changed_content_conflict": { "passed": false, "evidence_sha256": null },
+    "owner_isolation": { "passed": false, "evidence_sha256": null },
+    "restart_upgrade_rollback": {
+      "passed": false,
+      "evidence_sha256": null
+    },
+    "session_rotation_revocation": {
+      "passed": false,
+      "evidence_sha256": null
+    },
+    "telemetry_scan": { "passed": false, "evidence_sha256": null }
+  },
+  "hosts": {
+    "grok_bot": {
+      "version": null,
+      "operating_system": null,
+      "protected_storage": null,
+      "evidence_sha256": null,
+      "verified": false
+    },
+    "hermes": {
+      "version": null,
+      "operating_system": null,
+      "protected_storage": null,
+      "evidence_sha256": null,
+      "verified": false
+    },
+    "openclaw": {
+      "version": null,
+      "operating_system": null,
+      "protected_storage": null,
+      "evidence_sha256": null,
+      "verified": false
+    }
+  },
+  "measurement_windows": [],
+  "slos": {
+    "capability_discovery_latency": null,
+    "durable_acknowledgment_latency": null,
+    "consultation_latency": null,
+    "pending_operation_age": null,
+    "reconciliation_window": null,
+    "authentication_replay_rejection": null,
+    "exact_operation_retry": null,
+    "changed_content_conflict": null,
+    "source_divergence_safety": null,
+    "reorg_quarantine": null,
+    "correction_publication": null
+  },
+  "private_submission": {
+    "enabled": false,
+    "policy_approved": false,
+    "policy_digest": null
+  },
+  "verification": {
+    "production_verified": false,
+    "host_acceptance_verified": false,
+    "independent_verifier": null,
+    "verified_at": null
+  },
+  "blockers": [
+    "release and deployment evidence has not been copied into this template",
+    "production receipt signer and public trust manifest are not provisioned",
+    "signed production acceptance has not run",
+    "real Grok Bot, Hermes, and OpenClaw acceptance has not run",
+    "numeric SLOs are not approved or measured",
+    "private-submission production policy is not approved"
+  ]
+}

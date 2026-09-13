@@ -1,0 +1,2714 @@
+{
+  "protocol": "gossip/2-draft.1",
+  "objects": {
+    "chainEvidence": {
+      "digest": "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+      "evidence": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "chain_observation",
+        "claim": {
+          "predicate": "transfer-observed",
+          "value": {
+            "state": "known",
+            "type": "boolean",
+            "value": true
+          },
+          "limitations": []
+        },
+        "provenance": "observed",
+        "observed_at": 1700000010,
+        "validity": {
+          "type": "chain",
+          "chain_id": "4663",
+          "block_number": "42",
+          "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "block_timestamp": 1700000000,
+          "transaction_hash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "log_index": "3",
+          "finality": "safe",
+          "canonicality": "canonical",
+          "window": {
+            "start": 1699999990,
+            "end": 1700000000
+          },
+          "expires_at": 1700007200
+        },
+        "sources": [
+          {
+            "source_id": "rpc-log",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "rpc-log"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": [
+          "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730"
+        ]
+      }
+    },
+    "conflictingEvidence": {
+      "digest": "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730",
+      "evidence": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "transfer-observed",
+          "value": {
+            "state": "known",
+            "type": "boolean",
+            "value": false
+          },
+          "limitations": [
+            "This immutable source conflicts with the chain observation."
+          ]
+        },
+        "provenance": "observed",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "conflicting-snapshot",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "conflicting-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      }
+    },
+    "sourceUnknownEvidence": {
+      "digest": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+      "evidence": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "holder-count",
+          "value": {
+            "state": "unknown",
+            "reason": "not_measured"
+          },
+          "limitations": []
+        },
+        "provenance": "relayed",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "indexer-snapshot",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "indexer-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      }
+    },
+    "researchEvidence": {
+      "digest": "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+      "evidence": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "research_heuristic",
+        "claim": {
+          "predicate": "smart-money-signal",
+          "value": {
+            "state": "known",
+            "type": "decimal",
+            "value": "0.75",
+            "unit": "ratio"
+          },
+          "limitations": [
+            "Research heuristic only; it is not predictive or a profit claim."
+          ]
+        },
+        "provenance": "inferred",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "heuristic-rules",
+            "revision": "rules-v3",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "heuristic-rules"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [
+          "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+          "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62"
+        ],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      }
+    },
+    "correctionEvidence": {
+      "digest": "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8",
+      "evidence": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "holder-count",
+          "value": {
+            "state": "known",
+            "type": "decimal",
+            "value": "12",
+            "unit": "wallets"
+          },
+          "limitations": []
+        },
+        "provenance": "observed",
+        "observed_at": 1700000201,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "indexer-snapshot",
+            "revision": "rev-2",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "indexer-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+        "correction_reason": "Corrected immutable source revision.",
+        "conflicts_with": []
+      }
+    },
+    "publicGraph": {
+      "roots": [
+        "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+        "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8"
+      ],
+      "bundles": [
+        {
+          "digest": "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "research_heuristic",
+            "claim": {
+              "predicate": "smart-money-signal",
+              "value": {
+                "state": "known",
+                "type": "decimal",
+                "value": "0.75",
+                "unit": "ratio"
+              },
+              "limitations": [
+                "Research heuristic only; it is not predictive or a profit claim."
+              ]
+            },
+            "provenance": "inferred",
+            "observed_at": 1700000200,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "heuristic-rules",
+                "revision": "rules-v3",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "heuristic-rules"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [
+              "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+              "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62"
+            ],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        },
+        {
+          "digest": "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "chain_observation",
+            "claim": {
+              "predicate": "transfer-observed",
+              "value": {
+                "state": "known",
+                "type": "boolean",
+                "value": true
+              },
+              "limitations": []
+            },
+            "provenance": "observed",
+            "observed_at": 1700000010,
+            "validity": {
+              "type": "chain",
+              "chain_id": "4663",
+              "block_number": "42",
+              "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "block_timestamp": 1700000000,
+              "transaction_hash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "log_index": "3",
+              "finality": "safe",
+              "canonicality": "canonical",
+              "window": {
+                "start": 1699999990,
+                "end": 1700000000
+              },
+              "expires_at": 1700007200
+            },
+            "sources": [
+              {
+                "source_id": "rpc-log",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "rpc-log"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": [
+              "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730"
+            ]
+          }
+        },
+        {
+          "digest": "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "source_observation",
+            "claim": {
+              "predicate": "transfer-observed",
+              "value": {
+                "state": "known",
+                "type": "boolean",
+                "value": false
+              },
+              "limitations": [
+                "This immutable source conflicts with the chain observation."
+              ]
+            },
+            "provenance": "observed",
+            "observed_at": 1700000200,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "conflicting-snapshot",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "conflicting-snapshot"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        },
+        {
+          "digest": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "source_observation",
+            "claim": {
+              "predicate": "holder-count",
+              "value": {
+                "state": "unknown",
+                "reason": "not_measured"
+              },
+              "limitations": []
+            },
+            "provenance": "relayed",
+            "observed_at": 1700000200,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "indexer-snapshot",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "indexer-snapshot"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        },
+        {
+          "digest": "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "source_observation",
+            "claim": {
+              "predicate": "holder-count",
+              "value": {
+                "state": "known",
+                "type": "decimal",
+                "value": "12",
+                "unit": "wallets"
+              },
+              "limitations": []
+            },
+            "provenance": "observed",
+            "observed_at": 1700000201,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "indexer-snapshot",
+                "revision": "rev-2",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "public",
+                  "uri": "https://evidence.test/source.json"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "indexer-snapshot"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "public"
+            },
+            "derived_from": [],
+            "supersedes": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+            "correction_reason": "Corrected immutable source revision.",
+            "conflicts_with": []
+          }
+        }
+      ]
+    },
+    "ownerGraph": {
+      "roots": [
+        "sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0"
+      ],
+      "bundles": [
+        {
+          "digest": "sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "source_observation",
+            "claim": {
+              "predicate": "private-note",
+              "value": {
+                "state": "known",
+                "type": "text",
+                "value": "Synthetic owner-only evidence."
+              },
+              "limitations": []
+            },
+            "provenance": "observed",
+            "observed_at": 1700000200,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "owner-note",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "owner",
+                  "reference": "source-local-1"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "owner-note"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "owner",
+              "owner": {
+                "chain_id": "4663",
+                "address": "0x1111111111111111111111111111111111111111"
+              },
+              "policy_revision": "private-v1"
+            },
+            "derived_from": [],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        },
+        {
+          "digest": "sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0",
+          "evidence": {
+            "protocol": "gossip/2-draft.1",
+            "schema_revision": "2026-09-09",
+            "schema": "gossip.evidence.v1",
+            "subject": {
+              "kind": "token",
+              "chain_id": "4663",
+              "address": "0x2222222222222222222222222222222222222222"
+            },
+            "kind": "research_heuristic",
+            "claim": {
+              "predicate": "private-analysis",
+              "value": {
+                "state": "known",
+                "type": "boolean",
+                "value": false
+              },
+              "limitations": [
+                "Synthetic private example."
+              ]
+            },
+            "provenance": "inferred",
+            "observed_at": 1700000200,
+            "validity": {
+              "type": "source",
+              "window": {
+                "start": 1700000000,
+                "end": 1700000100
+              },
+              "expires_at": 1700007200,
+              "basis": {
+                "type": "issuer_interval",
+                "valid_from": 1699999000,
+                "valid_until": 1700010000
+              }
+            },
+            "sources": [
+              {
+                "source_id": "owner-analysis",
+                "revision": "rev-1",
+                "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "location": {
+                  "visibility": "owner",
+                  "reference": "source-local-1"
+                }
+              }
+            ],
+            "verification": {
+              "mode": "replay",
+              "method": "sha256-json",
+              "revision": "v1",
+              "source_ids": [
+                "owner-analysis"
+              ],
+              "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+            },
+            "confidence": [
+              {
+                "component": "reproducibility",
+                "assessment": "supported",
+                "explanation": "The immutable source revision is declared."
+              }
+            ],
+            "access": {
+              "visibility": "owner",
+              "owner": {
+                "chain_id": "4663",
+                "address": "0x1111111111111111111111111111111111111111"
+              },
+              "policy_revision": "private-v1"
+            },
+            "derived_from": [
+              "sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c"
+            ],
+            "supersedes": null,
+            "correction_reason": null,
+            "conflicts_with": []
+          }
+        }
+      ]
+    },
+    "resultManifest": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-09",
+      "schema": "gossip.result.v2",
+      "subject": {
+        "kind": "token",
+        "chain_id": "4663",
+        "address": "0x2222222222222222222222222222222222222222"
+      },
+      "evidence_digests": [
+        "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+        "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8"
+      ]
+    },
+    "consultation": {
+      "protocol": "gossip/2-draft.1",
+      "schema_revision": "2026-09-09",
+      "auth_profile": "gossip-eip191-v2",
+      "operation_id": "vector-operation-1",
+      "actor": {
+        "chain_id": "4663",
+        "address": "0x1111111111111111111111111111111111111111"
+      },
+      "subject": {
+        "kind": "token",
+        "chain_id": "4663",
+        "address": "0x2222222222222222222222222222222222222222"
+      },
+      "capability": "token_overview",
+      "endpoint": "https://engine.test/mcp",
+      "audience": "https://engine.test/",
+      "quality": {
+        "tier": "enriched",
+        "max_age_seconds": 3600,
+        "finality": "safe",
+        "allow_partial": true
+      },
+      "max_cost": {
+        "unit": "earned_credit",
+        "amount": "10"
+      },
+      "deadline": 1900000000
+    },
+    "acknowledgment": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "acknowledgment",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 0,
+        "previous_receipt_digest": null,
+        "accepted_at": 1800000000,
+        "issued_at": 1800000000,
+        "status": "pending",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "reserved",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": null
+      },
+      "receipt_digest": "sha256:22799bd051c7a85bfb6c341c7c64600c942d6389c62922955eb7abc16e4355af",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    },
+    "pendingReceipt": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 1,
+        "previous_receipt_digest": "sha256:22799bd051c7a85bfb6c341c7c64600c942d6389c62922955eb7abc16e4355af",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000001,
+        "status": "pending",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "reserved",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": null
+      },
+      "receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    },
+    "completeReceipt": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "complete",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "settled",
+          "reserved_amount": "10",
+          "charged_amount": "8"
+        },
+        "result_digest": "sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd",
+        "error_code": null
+      },
+      "receipt_digest": "sha256:3507e3f3cf8b29d5bbb47cfc5c7eaebbb00c4ab2fce97f2f66a3933813685d51",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    },
+    "partialReceipt": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "partial",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": [
+            "freshness"
+          ]
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "settled",
+          "reserved_amount": "10",
+          "charged_amount": "5"
+        },
+        "result_digest": "sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd",
+        "error_code": null
+      },
+      "receipt_digest": "sha256:ae2c81327143cf942214562de7d7486db1fa7f67e4a737395ea40ad2629fab6f",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    },
+    "rejectedReceipt": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "rejected",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "released",
+          "reserved_amount": "10",
+          "charged_amount": "0"
+        },
+        "result_digest": null,
+        "error_code": "evidence_unavailable"
+      },
+      "receipt_digest": "sha256:599d63e4168fcdfe60d104c5ab8fb224f3d180b47b02582be3ac4e241b53d0af",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    },
+    "reconciliationReceipt": {
+      "receipt": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "reconciliation_required",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "unknown",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": "reconciliation_required"
+      },
+      "receipt_digest": "sha256:90a8d2a39550e72f632f45840d0ad779353f0a2e8b0997e056380fa0ba1d9566",
+      "signature": "c3ludGhldGljLW5vdC1hdXRoZW50aWNhdGVk"
+    }
+  },
+  "literals": {
+    "chainEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "chain_observation",
+        "claim": {
+          "predicate": "transfer-observed",
+          "value": {
+            "state": "known",
+            "type": "boolean",
+            "value": true
+          },
+          "limitations": []
+        },
+        "provenance": "observed",
+        "observed_at": 1700000010,
+        "validity": {
+          "type": "chain",
+          "chain_id": "4663",
+          "block_number": "42",
+          "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "block_timestamp": 1700000000,
+          "transaction_hash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "log_index": "3",
+          "finality": "safe",
+          "canonicality": "canonical",
+          "window": {
+            "start": 1699999990,
+            "end": 1700000000
+          },
+          "expires_at": 1700007200
+        },
+        "sources": [
+          {
+            "source_id": "rpc-log",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "rpc-log"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": [
+          "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730"
+        ]
+      },
+      "canonical": "{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":true}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[\"sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730\"],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"chain_observation\",\"observed_at\":1700000010,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"rpc-log\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"block_hash\":\"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"block_number\":\"42\",\"block_timestamp\":1700000000,\"canonicality\":\"canonical\",\"chain_id\":\"4663\",\"expires_at\":1700007200,\"finality\":\"safe\",\"log_index\":\"3\",\"transaction_hash\":\"0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"type\":\"chain\",\"window\":{\"end\":1700000000,\"start\":1699999990}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"rpc-log\"]}}",
+      "digest": "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d"
+    },
+    "conflictingEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "transfer-observed",
+          "value": {
+            "state": "known",
+            "type": "boolean",
+            "value": false
+          },
+          "limitations": [
+            "This immutable source conflicts with the chain observation."
+          ]
+        },
+        "provenance": "observed",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "conflicting-snapshot",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "conflicting-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      },
+      "canonical": "{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[\"This immutable source conflicts with the chain observation.\"],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":false}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"conflicting-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"conflicting-snapshot\"]}}",
+      "digest": "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730"
+    },
+    "sourceUnknownEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "holder-count",
+          "value": {
+            "state": "unknown",
+            "reason": "not_measured"
+          },
+          "limitations": []
+        },
+        "provenance": "relayed",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "indexer-snapshot",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "indexer-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      },
+      "canonical": "{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"holder-count\",\"value\":{\"reason\":\"not_measured\",\"state\":\"unknown\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"relayed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"indexer-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"indexer-snapshot\"]}}",
+      "digest": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62"
+    },
+    "researchEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "research_heuristic",
+        "claim": {
+          "predicate": "smart-money-signal",
+          "value": {
+            "state": "known",
+            "type": "decimal",
+            "value": "0.75",
+            "unit": "ratio"
+          },
+          "limitations": [
+            "Research heuristic only; it is not predictive or a profit claim."
+          ]
+        },
+        "provenance": "inferred",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "heuristic-rules",
+            "revision": "rules-v3",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "heuristic-rules"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [
+          "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+          "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62"
+        ],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      },
+      "canonical": "{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[\"Research heuristic only; it is not predictive or a profit claim.\"],\"predicate\":\"smart-money-signal\",\"value\":{\"state\":\"known\",\"type\":\"decimal\",\"unit\":\"ratio\",\"value\":\"0.75\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[\"sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d\",\"sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62\"],\"kind\":\"research_heuristic\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"inferred\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rules-v3\",\"source_id\":\"heuristic-rules\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"heuristic-rules\"]}}",
+      "digest": "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421"
+    },
+    "correctionEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "source_observation",
+        "claim": {
+          "predicate": "holder-count",
+          "value": {
+            "state": "known",
+            "type": "decimal",
+            "value": "12",
+            "unit": "wallets"
+          },
+          "limitations": []
+        },
+        "provenance": "observed",
+        "observed_at": 1700000201,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "indexer-snapshot",
+            "revision": "rev-2",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "public",
+              "uri": "https://evidence.test/source.json"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "indexer-snapshot"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "public"
+        },
+        "derived_from": [],
+        "supersedes": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+        "correction_reason": "Corrected immutable source revision.",
+        "conflicts_with": []
+      },
+      "canonical": "{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"holder-count\",\"value\":{\"state\":\"known\",\"type\":\"decimal\",\"unit\":\"wallets\",\"value\":\"12\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":\"Corrected immutable source revision.\",\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000201,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-2\",\"source_id\":\"indexer-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":\"sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62\",\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"indexer-snapshot\"]}}",
+      "digest": "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8"
+    },
+    "ownerEvidence": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.evidence.v1",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "kind": "research_heuristic",
+        "claim": {
+          "predicate": "private-analysis",
+          "value": {
+            "state": "known",
+            "type": "boolean",
+            "value": false
+          },
+          "limitations": [
+            "Synthetic private example."
+          ]
+        },
+        "provenance": "inferred",
+        "observed_at": 1700000200,
+        "validity": {
+          "type": "source",
+          "window": {
+            "start": 1700000000,
+            "end": 1700000100
+          },
+          "expires_at": 1700007200,
+          "basis": {
+            "type": "issuer_interval",
+            "valid_from": 1699999000,
+            "valid_until": 1700010000
+          }
+        },
+        "sources": [
+          {
+            "source_id": "owner-analysis",
+            "revision": "rev-1",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "location": {
+              "visibility": "owner",
+              "reference": "source-local-1"
+            }
+          }
+        ],
+        "verification": {
+          "mode": "replay",
+          "method": "sha256-json",
+          "revision": "v1",
+          "source_ids": [
+            "owner-analysis"
+          ],
+          "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+        },
+        "confidence": [
+          {
+            "component": "reproducibility",
+            "assessment": "supported",
+            "explanation": "The immutable source revision is declared."
+          }
+        ],
+        "access": {
+          "visibility": "owner",
+          "owner": {
+            "chain_id": "4663",
+            "address": "0x1111111111111111111111111111111111111111"
+          },
+          "policy_revision": "private-v1"
+        },
+        "derived_from": [
+          "sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c"
+        ],
+        "supersedes": null,
+        "correction_reason": null,
+        "conflicts_with": []
+      },
+      "canonical": "{\"access\":{\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-v1\",\"visibility\":\"owner\"},\"claim\":{\"limitations\":[\"Synthetic private example.\"],\"predicate\":\"private-analysis\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":false}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[\"sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c\"],\"kind\":\"research_heuristic\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"inferred\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"reference\":\"source-local-1\",\"visibility\":\"owner\"},\"revision\":\"rev-1\",\"source_id\":\"owner-analysis\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"owner-analysis\"]}}",
+      "digest": "sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0"
+    },
+    "resultManifest": {
+      "domain": "evidence",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.result.v2",
+        "subject": {
+          "kind": "token",
+          "chain_id": "4663",
+          "address": "0x2222222222222222222222222222222222222222"
+        },
+        "evidence_digests": [
+          "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+          "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8"
+        ]
+      },
+      "canonical": "{\"evidence_digests\":[\"sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421\",\"sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8\"],\"protocol\":\"gossip/2-draft.1\",\"schema\":\"gossip.result.v2\",\"schema_revision\":\"2026-09-09\",\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"}}",
+      "digest": "sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd"
+    },
+    "acknowledgment": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "acknowledgment",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 0,
+        "previous_receipt_digest": null,
+        "accepted_at": 1800000000,
+        "issued_at": 1800000000,
+        "status": "pending",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "reserved",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": null
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":null,\"reserved_amount\":\"10\",\"state\":\"reserved\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":null,\"issued_at\":1800000000,\"kind\":\"acknowledgment\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":null,\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":null,\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":0,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"pending\"}",
+      "digest": "sha256:22799bd051c7a85bfb6c341c7c64600c942d6389c62922955eb7abc16e4355af"
+    },
+    "pendingReceipt": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 1,
+        "previous_receipt_digest": "sha256:22799bd051c7a85bfb6c341c7c64600c942d6389c62922955eb7abc16e4355af",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000001,
+        "status": "pending",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "reserved",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": null
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":null,\"reserved_amount\":\"10\",\"state\":\"reserved\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":null,\"issued_at\":1800000001,\"kind\":\"state\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":\"sha256:22799bd051c7a85bfb6c341c7c64600c942d6389c62922955eb7abc16e4355af\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":null,\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":1,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"pending\"}",
+      "digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5"
+    },
+    "completeReceipt": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "complete",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "settled",
+          "reserved_amount": "10",
+          "charged_amount": "8"
+        },
+        "result_digest": "sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd",
+        "error_code": null
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":\"8\",\"reserved_amount\":\"10\",\"state\":\"settled\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":null,\"issued_at\":1800000002,\"kind\":\"state\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":\"sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":\"sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd\",\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":2,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"complete\"}",
+      "digest": "sha256:3507e3f3cf8b29d5bbb47cfc5c7eaebbb00c4ab2fce97f2f66a3933813685d51"
+    },
+    "partialReceipt": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "partial",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": [
+            "freshness"
+          ]
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "settled",
+          "reserved_amount": "10",
+          "charged_amount": "5"
+        },
+        "result_digest": "sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd",
+        "error_code": null
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":\"5\",\"reserved_amount\":\"10\",\"state\":\"settled\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":null,\"issued_at\":1800000002,\"kind\":\"state\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":\"sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[\"freshness\"]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":\"sha256:5bc15a3754806a06ae06e7954bd76e228b2e4f57ad307a50351c935a7804d0bd\",\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":2,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"partial\"}",
+      "digest": "sha256:ae2c81327143cf942214562de7d7486db1fa7f67e4a737395ea40ad2629fab6f"
+    },
+    "rejectedReceipt": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "rejected",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "released",
+          "reserved_amount": "10",
+          "charged_amount": "0"
+        },
+        "result_digest": null,
+        "error_code": "evidence_unavailable"
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":\"0\",\"reserved_amount\":\"10\",\"state\":\"released\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":\"evidence_unavailable\",\"issued_at\":1800000002,\"kind\":\"state\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":\"sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":null,\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":2,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"rejected\"}",
+      "digest": "sha256:599d63e4168fcdfe60d104c5ab8fb224f3d180b47b02582be3ac4e241b53d0af"
+    },
+    "reconciliationReceipt": {
+      "domain": "receipt",
+      "value": {
+        "protocol": "gossip/2-draft.1",
+        "schema_revision": "2026-09-09",
+        "schema": "gossip.receipt.v2",
+        "auth_profile": "gossip-eip191-v2",
+        "kind": "state",
+        "operation_id": "vector-operation-1",
+        "request_digest": "sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b",
+        "actor": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "owner": {
+          "chain_id": "4663",
+          "address": "0x1111111111111111111111111111111111111111"
+        },
+        "endpoint": "https://engine.test/mcp",
+        "audience": "https://engine.test/",
+        "server": {
+          "id": "sherwood",
+          "revision": "synthetic-v1"
+        },
+        "signing": {
+          "profile": "synthetic-unverified",
+          "key_id": "test-key-1"
+        },
+        "sequence": 2,
+        "previous_receipt_digest": "sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5",
+        "accepted_at": 1800000000,
+        "issued_at": 1800000002,
+        "status": "reconciliation_required",
+        "quality": {
+          "requested": {
+            "tier": "enriched",
+            "max_age_seconds": 3600,
+            "finality": "safe",
+            "allow_partial": true
+          },
+          "selected_tier": "enriched",
+          "unmet_requirements": []
+        },
+        "max_cost": {
+          "unit": "earned_credit",
+          "amount": "10"
+        },
+        "economics": {
+          "unit": "earned_credit",
+          "state": "unknown",
+          "reserved_amount": "10",
+          "charged_amount": null
+        },
+        "result_digest": null,
+        "error_code": "reconciliation_required"
+      },
+      "canonical": "{\"accepted_at\":1800000000,\"actor\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"audience\":\"https://engine.test/\",\"auth_profile\":\"gossip-eip191-v2\",\"economics\":{\"charged_amount\":null,\"reserved_amount\":\"10\",\"state\":\"unknown\",\"unit\":\"earned_credit\"},\"endpoint\":\"https://engine.test/mcp\",\"error_code\":\"reconciliation_required\",\"issued_at\":1800000002,\"kind\":\"state\",\"max_cost\":{\"amount\":\"10\",\"unit\":\"earned_credit\"},\"operation_id\":\"vector-operation-1\",\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"previous_receipt_digest\":\"sha256:458de781317f81fe5699fa49312ee861a2937c65fd4d469b3a85a76dd4e65ce5\",\"protocol\":\"gossip/2-draft.1\",\"quality\":{\"requested\":{\"allow_partial\":true,\"finality\":\"safe\",\"max_age_seconds\":3600,\"tier\":\"enriched\"},\"selected_tier\":\"enriched\",\"unmet_requirements\":[]},\"request_digest\":\"sha256:69f590a3bbabedb63ceb16d8ee50bd4221282a06f4ce90ae6c4a2492a7ebdc5b\",\"result_digest\":null,\"schema\":\"gossip.receipt.v2\",\"schema_revision\":\"2026-09-09\",\"sequence\":2,\"server\":{\"id\":\"sherwood\",\"revision\":\"synthetic-v1\"},\"signing\":{\"key_id\":\"test-key-1\",\"profile\":\"synthetic-unverified\"},\"status\":\"reconciliation_required\"}",
+      "digest": "sha256:90a8d2a39550e72f632f45840d0ad779353f0a2e8b0997e056380fa0ba1d9566"
+    }
+  },
+  "graphs": {
+    "public": {
+      "value": {
+        "roots": [
+          "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+          "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8"
+        ],
+        "bundles": [
+          {
+            "digest": "sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "research_heuristic",
+              "claim": {
+                "predicate": "smart-money-signal",
+                "value": {
+                  "state": "known",
+                  "type": "decimal",
+                  "value": "0.75",
+                  "unit": "ratio"
+                },
+                "limitations": [
+                  "Research heuristic only; it is not predictive or a profit claim."
+                ]
+              },
+              "provenance": "inferred",
+              "observed_at": 1700000200,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "heuristic-rules",
+                  "revision": "rules-v3",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "public",
+                    "uri": "https://evidence.test/source.json"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "heuristic-rules"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "public"
+              },
+              "derived_from": [
+                "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+                "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62"
+              ],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": []
+            }
+          },
+          {
+            "digest": "sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "chain_observation",
+              "claim": {
+                "predicate": "transfer-observed",
+                "value": {
+                  "state": "known",
+                  "type": "boolean",
+                  "value": true
+                },
+                "limitations": []
+              },
+              "provenance": "observed",
+              "observed_at": 1700000010,
+              "validity": {
+                "type": "chain",
+                "chain_id": "4663",
+                "block_number": "42",
+                "block_hash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "block_timestamp": 1700000000,
+                "transaction_hash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                "log_index": "3",
+                "finality": "safe",
+                "canonicality": "canonical",
+                "window": {
+                  "start": 1699999990,
+                  "end": 1700000000
+                },
+                "expires_at": 1700007200
+              },
+              "sources": [
+                {
+                  "source_id": "rpc-log",
+                  "revision": "rev-1",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "public",
+                    "uri": "https://evidence.test/source.json"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "rpc-log"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "public"
+              },
+              "derived_from": [],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": [
+                "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730"
+              ]
+            }
+          },
+          {
+            "digest": "sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "source_observation",
+              "claim": {
+                "predicate": "transfer-observed",
+                "value": {
+                  "state": "known",
+                  "type": "boolean",
+                  "value": false
+                },
+                "limitations": [
+                  "This immutable source conflicts with the chain observation."
+                ]
+              },
+              "provenance": "observed",
+              "observed_at": 1700000200,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "conflicting-snapshot",
+                  "revision": "rev-1",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "public",
+                    "uri": "https://evidence.test/source.json"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "conflicting-snapshot"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "public"
+              },
+              "derived_from": [],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": []
+            }
+          },
+          {
+            "digest": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "source_observation",
+              "claim": {
+                "predicate": "holder-count",
+                "value": {
+                  "state": "unknown",
+                  "reason": "not_measured"
+                },
+                "limitations": []
+              },
+              "provenance": "relayed",
+              "observed_at": 1700000200,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "indexer-snapshot",
+                  "revision": "rev-1",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "public",
+                    "uri": "https://evidence.test/source.json"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "indexer-snapshot"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "public"
+              },
+              "derived_from": [],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": []
+            }
+          },
+          {
+            "digest": "sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "source_observation",
+              "claim": {
+                "predicate": "holder-count",
+                "value": {
+                  "state": "known",
+                  "type": "decimal",
+                  "value": "12",
+                  "unit": "wallets"
+                },
+                "limitations": []
+              },
+              "provenance": "observed",
+              "observed_at": 1700000201,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "indexer-snapshot",
+                  "revision": "rev-2",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "public",
+                    "uri": "https://evidence.test/source.json"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "indexer-snapshot"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "public"
+              },
+              "derived_from": [],
+              "supersedes": "sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62",
+              "correction_reason": "Corrected immutable source revision.",
+              "conflicts_with": []
+            }
+          }
+        ]
+      },
+      "canonical": "{\"bundles\":[{\"digest\":\"sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[\"Research heuristic only; it is not predictive or a profit claim.\"],\"predicate\":\"smart-money-signal\",\"value\":{\"state\":\"known\",\"type\":\"decimal\",\"unit\":\"ratio\",\"value\":\"0.75\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[\"sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d\",\"sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62\"],\"kind\":\"research_heuristic\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"inferred\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rules-v3\",\"source_id\":\"heuristic-rules\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"heuristic-rules\"]}}},{\"digest\":\"sha256:b57cf3c3d7c4dedc1abd9d40ac22e05e037f53635f14afdf30f323832229888d\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":true}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[\"sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730\"],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"chain_observation\",\"observed_at\":1700000010,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"rpc-log\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"block_hash\":\"0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"block_number\":\"42\",\"block_timestamp\":1700000000,\"canonicality\":\"canonical\",\"chain_id\":\"4663\",\"expires_at\":1700007200,\"finality\":\"safe\",\"log_index\":\"3\",\"transaction_hash\":\"0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\"type\":\"chain\",\"window\":{\"end\":1700000000,\"start\":1699999990}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"rpc-log\"]}}},{\"digest\":\"sha256:d94f7c73f06335f70a8646bdde0bfe9ded68a63f0c0619e1965d47e4e86c8730\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[\"This immutable source conflicts with the chain observation.\"],\"predicate\":\"transfer-observed\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":false}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"conflicting-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"conflicting-snapshot\"]}}},{\"digest\":\"sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"holder-count\",\"value\":{\"reason\":\"not_measured\",\"state\":\"unknown\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"relayed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-1\",\"source_id\":\"indexer-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"indexer-snapshot\"]}}},{\"digest\":\"sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8\",\"evidence\":{\"access\":{\"visibility\":\"public\"},\"claim\":{\"limitations\":[],\"predicate\":\"holder-count\",\"value\":{\"state\":\"known\",\"type\":\"decimal\",\"unit\":\"wallets\",\"value\":\"12\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":\"Corrected immutable source revision.\",\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000201,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"uri\":\"https://evidence.test/source.json\",\"visibility\":\"public\"},\"revision\":\"rev-2\",\"source_id\":\"indexer-snapshot\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":\"sha256:f6339a82f61d40a3e73a6c98d5225755851a26f5c7b92c83413a074867f39f62\",\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"indexer-snapshot\"]}}}],\"roots\":[\"sha256:ac9d2b7a9fc58f174512639ace5f07eb5f8d0671f5bde4f3fc60e21b93f92421\",\"sha256:fd3309bad58160e4900c3b3e948b6f475c0cf817a3e90f9c58c4967783dee5a8\"]}"
+    },
+    "owner": {
+      "value": {
+        "roots": [
+          "sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0"
+        ],
+        "bundles": [
+          {
+            "digest": "sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "source_observation",
+              "claim": {
+                "predicate": "private-note",
+                "value": {
+                  "state": "known",
+                  "type": "text",
+                  "value": "Synthetic owner-only evidence."
+                },
+                "limitations": []
+              },
+              "provenance": "observed",
+              "observed_at": 1700000200,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "owner-note",
+                  "revision": "rev-1",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "owner",
+                    "reference": "source-local-1"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "owner-note"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "owner",
+                "owner": {
+                  "chain_id": "4663",
+                  "address": "0x1111111111111111111111111111111111111111"
+                },
+                "policy_revision": "private-v1"
+              },
+              "derived_from": [],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": []
+            }
+          },
+          {
+            "digest": "sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0",
+            "evidence": {
+              "protocol": "gossip/2-draft.1",
+              "schema_revision": "2026-09-09",
+              "schema": "gossip.evidence.v1",
+              "subject": {
+                "kind": "token",
+                "chain_id": "4663",
+                "address": "0x2222222222222222222222222222222222222222"
+              },
+              "kind": "research_heuristic",
+              "claim": {
+                "predicate": "private-analysis",
+                "value": {
+                  "state": "known",
+                  "type": "boolean",
+                  "value": false
+                },
+                "limitations": [
+                  "Synthetic private example."
+                ]
+              },
+              "provenance": "inferred",
+              "observed_at": 1700000200,
+              "validity": {
+                "type": "source",
+                "window": {
+                  "start": 1700000000,
+                  "end": 1700000100
+                },
+                "expires_at": 1700007200,
+                "basis": {
+                  "type": "issuer_interval",
+                  "valid_from": 1699999000,
+                  "valid_until": 1700010000
+                }
+              },
+              "sources": [
+                {
+                  "source_id": "owner-analysis",
+                  "revision": "rev-1",
+                  "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "location": {
+                    "visibility": "owner",
+                    "reference": "source-local-1"
+                  }
+                }
+              ],
+              "verification": {
+                "mode": "replay",
+                "method": "sha256-json",
+                "revision": "v1",
+                "source_ids": [
+                  "owner-analysis"
+                ],
+                "instructions": "Hash the exact immutable source bytes and compare the declared fields."
+              },
+              "confidence": [
+                {
+                  "component": "reproducibility",
+                  "assessment": "supported",
+                  "explanation": "The immutable source revision is declared."
+                }
+              ],
+              "access": {
+                "visibility": "owner",
+                "owner": {
+                  "chain_id": "4663",
+                  "address": "0x1111111111111111111111111111111111111111"
+                },
+                "policy_revision": "private-v1"
+              },
+              "derived_from": [
+                "sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c"
+              ],
+              "supersedes": null,
+              "correction_reason": null,
+              "conflicts_with": []
+            }
+          }
+        ]
+      },
+      "canonical": "{\"bundles\":[{\"digest\":\"sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c\",\"evidence\":{\"access\":{\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-v1\",\"visibility\":\"owner\"},\"claim\":{\"limitations\":[],\"predicate\":\"private-note\",\"value\":{\"state\":\"known\",\"type\":\"text\",\"value\":\"Synthetic owner-only evidence.\"}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[],\"kind\":\"source_observation\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"observed\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"reference\":\"source-local-1\",\"visibility\":\"owner\"},\"revision\":\"rev-1\",\"source_id\":\"owner-note\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"owner-note\"]}}},{\"digest\":\"sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0\",\"evidence\":{\"access\":{\"owner\":{\"address\":\"0x1111111111111111111111111111111111111111\",\"chain_id\":\"4663\"},\"policy_revision\":\"private-v1\",\"visibility\":\"owner\"},\"claim\":{\"limitations\":[\"Synthetic private example.\"],\"predicate\":\"private-analysis\",\"value\":{\"state\":\"known\",\"type\":\"boolean\",\"value\":false}},\"confidence\":[{\"assessment\":\"supported\",\"component\":\"reproducibility\",\"explanation\":\"The immutable source revision is declared.\"}],\"conflicts_with\":[],\"correction_reason\":null,\"derived_from\":[\"sha256:12e07a1553f70af7708f48d0493b628e213045232d607927a4650deab62ec87c\"],\"kind\":\"research_heuristic\",\"observed_at\":1700000200,\"protocol\":\"gossip/2-draft.1\",\"provenance\":\"inferred\",\"schema\":\"gossip.evidence.v1\",\"schema_revision\":\"2026-09-09\",\"sources\":[{\"content_hash\":\"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"location\":{\"reference\":\"source-local-1\",\"visibility\":\"owner\"},\"revision\":\"rev-1\",\"source_id\":\"owner-analysis\"}],\"subject\":{\"address\":\"0x2222222222222222222222222222222222222222\",\"chain_id\":\"4663\",\"kind\":\"token\"},\"supersedes\":null,\"validity\":{\"basis\":{\"type\":\"issuer_interval\",\"valid_from\":1699999000,\"valid_until\":1700010000},\"expires_at\":1700007200,\"type\":\"source\",\"window\":{\"end\":1700000100,\"start\":1700000000}},\"verification\":{\"instructions\":\"Hash the exact immutable source bytes and compare the declared fields.\",\"method\":\"sha256-json\",\"mode\":\"replay\",\"revision\":\"v1\",\"source_ids\":[\"owner-analysis\"]}}}],\"roots\":[\"sha256:4c11de037eb6a8364cceeaf2b3e5e001185150526d815892d837409f5c2038b0\"]}"
+    }
+  }
+}

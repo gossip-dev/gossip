@@ -97,6 +97,13 @@ The trading preview supports a single-pool Uniswap V3 exact-input ERC-20 swap us
 
 Transactions are simulated before signing. Exact-amount approval is supported from zero allowance; nonzero insufficient allowances require owner handling. The local journal is persisted before broadcast; retries resend identical signed bytes and reconcile receipts. Revocation stops new signing and rebroadcast, but cannot revoke already broadcast transactions or token allowances. Processes using the same state directory are serialized; independent installations must not concurrently trade through the same account. After a crashed process, a stale `trade.lock` requires confirming that the process is gone before removing that lock.
 
+`trade order` adds a durable local intent book for market and limit buy/sell
+orders. These entries are not onchain Uniswap limit orders and never execute in
+the background. `order check` only obtains a fresh quote and reports whether the
+slippage-bounded output meets the limit. Execution still requires the existing
+`quote -> authorize` (interactive `CONFIRM`) `-> execute` flow. See
+[the local order book guide](docs/local-order-book.md).
+
 Spec #2 remains open: real host runs, the public engine and inherited standards dependencies are not supplied by this preview. Automatic fee replacement, externally consumed nonce recovery, complete reorg acceptance, contract-wallet execution, release provenance and real Uniswap fork acceptance remain pending. Tests use synthetic accounts/contracts, never production funds. Onboarding reports each standard separately instead of claiming universal wallet compliance.
 
 Authoritative deployment inventory: https://developers.uniswap.org/docs/protocols/v3/deployments/v3-robinhood-chain-deployments.md (chain 4663; SwapRouter02 uses standard ERC-20 approval, not Permit2).

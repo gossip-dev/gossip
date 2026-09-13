@@ -2,7 +2,7 @@ import { strict as assert } from "node:assert";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { readFileSync } from "node:fs";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:https";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { execFile } from "node:child_process";
@@ -339,6 +339,61 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
         ],
         { env: cliEnv },
       );
+      await execute(
+        process.execPath,
+        [
+          ...cli,
+          "trade",
+          "order",
+          "create",
+          "--id",
+          "fixture-limit",
+          "--side",
+          "buy",
+          "--type",
+          "limit",
+          "--token-in",
+          tokenInAddress,
+          "--token-out",
+          tokenOutAddress,
+          "--amount-in",
+          "1000",
+          "--limit-price",
+          "1.98",
+          "--slippage-bps",
+          "100",
+          "--deadline-seconds",
+          "300",
+          "--directory",
+          state,
+        ],
+        { env: cliEnv },
+      );
+      const checkedOrder = JSON.parse(
+        (
+          await execute(
+            process.execPath,
+            [
+              ...cli,
+              "trade",
+              "order",
+              "check",
+              "--id",
+              "fixture-limit",
+              "--directory",
+              state,
+            ],
+            { env: cliEnv },
+          )
+        ).stdout,
+      );
+      assert.equal(checkedOrder.reachable, true);
+      assert.equal(checkedOrder.order.status, "ready");
+      assert.equal(checkedOrder.preparedQuote.amountOutMinimum, "1980");
+      assert.equal(checkedOrder.executionAuthorized, false);
+      const orderCheckFiles = await readdir(state);
+      assert(!orderCheckFiles.includes("trade-permission.json"));
+      assert(!orderCheckFiles.includes("trades.json"));
       const cliResult = await execute(
         process.execPath,
         [

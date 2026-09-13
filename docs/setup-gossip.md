@@ -111,6 +111,12 @@ blocked. The execution journal preserves retry identity and reports pending
 transactions without creating a new trade. No live DEX swap has been tested;
 only official deployment addresses and synthetic local contracts are evidence.
 
+`trade order create|list|status|check|cancel` maintains a durable local intent
+book. It does not install an onchain limit-order protocol or grant standing
+authority. A successful check only returns a fresh quote and marks the intent
+ready; the existing interactive `authorize` and explicit `execute` commands
+remain mandatory. See [`local-order-book.md`](local-order-book.md).
+
 The final report must include evidence, the public wallet address only, and one
 concrete next action for every pending facet. Installation never equals a
 connected or trading-ready agent.

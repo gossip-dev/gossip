@@ -94,6 +94,12 @@ allowance is blocked. The journal keeps retries on the same trade and never
 turns pending into a new trade. No live DEX swap is tested; official addresses
 and synthetic local contracts are the current evidence.
 
+Agents may keep passive market and limit intents with `trade order
+create|list|status|check|cancel`. These records are local, not onchain Uniswap
+limit orders. `order check` is a quote-only read and `ready` is not permission.
+Every fill must still pass through `trade authorize` with an interactive
+`CONFIRM`, followed by `trade execute`. Never start an autonomous order daemon.
+
 The six inherited standards are reported independently: EIP-55, EIP-191,
 EIP-712, ERC-1271, ERC-8004, and ERC-8128. A local helper or installed library
 does not establish engine or hosted verification; do not report all six as

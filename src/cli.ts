@@ -392,6 +392,13 @@ function safeError(error: unknown): string {
   }
   if (error.message === "Trade authorization requires an interactive terminal")
     return error.message;
+  if (
+    error.message.startsWith("Order ") ||
+    error.message.startsWith("Invalid order") ||
+    error.message.startsWith("Invalid trade order arguments") ||
+    error.message.startsWith("trade order requires")
+  )
+    return error.message;
   if (/configuration/i.test(error.message)) {
     return "Configuration error. Run `gossip doctor` and review the local configuration.";
   }

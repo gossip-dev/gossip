@@ -22,6 +22,7 @@ import {
 import {
   quoteExactInputSingle,
   QUOTER_V2,
+  ROBINHOOD_WETH9,
   SWAP_ROUTER02,
   V3_FACTORY,
 } from "../src/dex.js";
@@ -151,6 +152,7 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
     await router.waitForDeployment();
     for (const [address, code] of [
       [tokenInAddress, await tokenIn.getDeployedCode()],
+      [ROBINHOOD_WETH9, await tokenIn.getDeployedCode()],
       [tokenOutAddress, await tokenOut.getDeployedCode()],
       [poolAddress, await pool.getDeployedCode()],
       [V3_FACTORY, await factory.getDeployedCode()],
@@ -184,6 +186,24 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
     assert.equal(quote.amountOutMinimum, 1_980n);
     await (await signer.sendTransaction(quote.transaction)).wait();
     assert.equal(await output.balanceOf(recipient), 2_000n);
+    const nativeQuote = await quoteExactInputSingle({
+      provider,
+      tokenIn: ROBINHOOD_WETH9,
+      tokenOut: tokenOutAddress,
+      inputKind: "native",
+      amountIn: 500n,
+      fee: 3000,
+      slippageBps: 100,
+      deadlineSecs: 300,
+      recipient,
+    });
+    assert.equal(nativeQuote.transaction.value, 500n);
+    await (await signer.sendTransaction(nativeQuote.transaction)).wait();
+    assert.equal(
+      await output.balanceOf(recipient),
+      3_000n,
+      "native input must execute without an ERC-20 approval",
+    );
     const expired = await quoteExactInputSingle({
       provider,
       tokenIn: tokenInAddress,
@@ -468,7 +488,7 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
           JSON.stringify(invalid),
         );
         await assert.rejects(executeTrade);
-        assert.equal(await output.balanceOf(recipient), 2000n);
+        assert.equal(await output.balanceOf(recipient), 3000n);
       }
       await writeFile(
         join(state, "trade-permission.json"),
@@ -484,7 +504,7 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
       assert.equal(revokedResult.executionAuthorized, false);
       assert.equal(
         await output.balanceOf(recipient),
-        2000n,
+        3000n,
         "revocation must prevent the swap after approval",
       );
       await writeFile(
@@ -506,7 +526,7 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
           { env: cliEnv },
         );
       }
-      assert.equal(await output.balanceOf(recipient), 4000n);
+      assert.equal(await output.balanceOf(recipient), 5000n);
       await execute(
         process.execPath,
         [
@@ -522,7 +542,7 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
       );
       assert.equal(
         await output.balanceOf(recipient),
-        4000n,
+        5000n,
         "retries must not repeat a swap",
       );
 
@@ -578,7 +598,75 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
       ];
       await execute(process.execPath, autonomousBuy, { env: cliEnv });
       await execute(process.execPath, autonomousBuy, { env: cliEnv });
-      assert.equal(await output.balanceOf(recipient), 6000n);
+      assert.equal(await output.balanceOf(recipient), 7000n);
+
+      await execute(
+        process.execPath,
+        [...cli, "trade", "autonomy", "revoke", "--directory", state],
+        { env: cliEnv },
+      );
+      await proposeAutonomy(
+        state,
+        {
+          id: "fixture-native-auto",
+          account: recipient,
+          inputKind: "native",
+          inputToken: ROBINHOOD_WETH9,
+          outputTokens: [tokenOutAddress],
+          actionKinds: ["quick-buy"],
+          maxInputPerTrade: "500",
+          maxInputPerUtcDay: "500",
+          maxInputTotal: "500",
+          maxTradesPerUtcDay: 1,
+          maxExecutions: 1,
+          maxInputBalanceBps: 10000,
+          maxSlippageBps: 100,
+          gasLimit: "500000",
+          maxFeePerGas: "10000000000",
+          maxPriorityFeePerGas: "1000000000",
+          maxGasCostPerTrade: "10000000000000000",
+          maxGasCostPerUtcDay: "10000000000000000",
+          maxDeadlineSeconds: 300,
+          minNativeReserveWei: "0",
+          feeTiers: [3000],
+          validUntil: now + 3600,
+        },
+        now,
+      );
+      await activateAutonomyProposal(
+        state,
+        "fixture-native-auto",
+        recipient,
+        now,
+      );
+      const nativeAutonomousBuy = [
+        ...cli,
+        "trade",
+        "buy",
+        "--id",
+        "fixture-native-buy",
+        "--input-kind",
+        "native",
+        "--token-out",
+        tokenOutAddress,
+        "--spend-wei",
+        "500",
+        "--fee",
+        "3000",
+        "--slippage-bps",
+        "100",
+        "--deadline-seconds",
+        "300",
+        "--directory",
+        state,
+      ];
+      await execute(process.execPath, nativeAutonomousBuy, { env: cliEnv });
+      await execute(process.execPath, nativeAutonomousBuy, { env: cliEnv });
+      assert.equal(
+        await output.balanceOf(recipient),
+        8000n,
+        "native autonomous retries must execute once without approval",
+      );
     } finally {
       await new Promise<void>((resolve) => proxy.close(() => resolve()));
       await rm(directory, { recursive: true, force: true });

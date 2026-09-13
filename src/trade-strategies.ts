@@ -69,6 +69,7 @@ const commonInputSchema = z
   .object({
     id: idSchema,
     account: addressSchema,
+    inputKind: z.enum(["erc20", "native"]).optional(),
     tokenIn: addressSchema,
     tokenOut: addressSchema,
     fee: feeSchema,
@@ -89,6 +90,7 @@ const commonInputSchema = z
 export const watcherInputSchema = commonInputSchema
   .extend({
     kind: z.literal("watcher"),
+    amountIn: positiveUintSchema.optional(),
     threshold: thresholdSchema,
     pollIntervalSeconds: intervalSchema,
     maxRuns: z.number().int().min(1).max(MAX_OCCURRENCES).nullable(),
@@ -110,6 +112,7 @@ const strategyBaseSchema = z
     schemaVersion: z.literal(1),
     id: idSchema,
     account: addressSchema,
+    inputKind: z.enum(["erc20", "native"]).optional(),
     tokenIn: addressSchema,
     tokenOut: addressSchema,
     fee: feeSchema,
@@ -171,10 +174,7 @@ const strategyBaseSchema = z
           message: "in-flight occurrence kind must match its strategy",
         });
       }
-      if (
-        (kind === "watcher" && strategy.inFlightOccurrence.amountIn !== null) ||
-        (kind === "dca" && strategy.inFlightOccurrence.amountIn === null)
-      ) {
+      if (kind === "dca" && strategy.inFlightOccurrence.amountIn === null) {
         context.addIssue({
           code: "custom",
           path: ["inFlightOccurrence", "amountIn"],
@@ -187,6 +187,7 @@ const strategyBaseSchema = z
 const watcherSchema = strategyBaseSchema
   .extend({
     kind: z.literal("watcher"),
+    amountIn: positiveUintSchema.optional(),
     threshold: thresholdSchema,
     pollIntervalSeconds: intervalSchema,
     maxRuns: z.number().int().min(1).max(MAX_OCCURRENCES).nullable(),
@@ -457,7 +458,7 @@ export async function claimDueOccurrences(
         kind: strategy.kind,
         scheduledAt: strategy.nextOccurrenceAt,
         runNumber,
-        amountIn: null,
+        amountIn: strategy.amountIn ?? null,
       } satisfies StrategyOccurrence;
       occurrences.push(occurrence);
       strategy.inFlightOccurrence = occurrence;

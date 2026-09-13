@@ -14,6 +14,7 @@ import { createCredentialStore } from "./credential-store.js";
 import { createNetworkProvider } from "./network.js";
 import {
   buildSwapTransaction,
+  ROBINHOOD_WETH9,
   SWAP_ROUTER02,
   QUOTER_V2,
   V3_FACTORY,
@@ -35,6 +36,7 @@ const quoteSchema = z
     router: address,
     tokenIn: address,
     tokenOut: address,
+    inputKind: z.enum(["erc20", "native"]).optional(),
     fee: z.union([
       z.literal(100),
       z.literal(500),
@@ -49,7 +51,7 @@ const quoteSchema = z
     factory: address,
     pool: address,
     transaction: z
-      .object({ to: address, data: z.string(), value: z.literal("0") })
+      .object({ to: address, data: z.string(), value: uint })
       .strict(),
     executionAuthorized: z.literal(false),
   })
@@ -74,6 +76,7 @@ export const permissionSchema = z
         requestIntent: z
           .object({
             tokenOut: address,
+            inputKind: z.enum(["erc20", "native"]).optional(),
             spendType: z.enum(["fixed", "balance-bps"]),
             spendValue: uint,
           })
@@ -118,6 +121,12 @@ export function validatePermission(permission: Permission): void {
   )
     throw new Error("Invalid trade bounds");
   if (
+    (q.inputKind ?? "erc20") === "native" &&
+    q.tokenIn !== getAddress(ROBINHOOD_WETH9)
+  ) {
+    throw new Error("Native input must use the pinned Robinhood WETH9 route");
+  }
+  if (
     BigInt(permission.gasLimit) === 0n ||
     BigInt(permission.maxFeePerGas) === 0n ||
     (permission.maxPriorityFeePerGas !== undefined &&
@@ -125,7 +134,11 @@ export function validatePermission(permission: Permission): void {
   )
     throw new Error("Gas bounds must be positive");
   const expected = swapTransaction(permission);
-  if (q.transaction.to !== expected.to || q.transaction.data !== expected.data)
+  if (
+    q.transaction.to !== expected.to ||
+    q.transaction.data !== expected.data ||
+    BigInt(q.transaction.value) !== expected.value
+  )
     throw new Error("Quote transaction differs from the approved trade");
 }
 function swapTransaction(permission: Permission) {
@@ -138,6 +151,7 @@ function swapTransaction(permission: Permission) {
     amountIn: BigInt(q.amountIn),
     amountOutMinimum: BigInt(q.amountOutMinimum),
     deadline: BigInt(q.deadline),
+    inputKind: q.inputKind ?? "erc20",
   });
 }
 
@@ -206,17 +220,24 @@ export async function executeTrade(
       if (signer.address !== permission.quote.account)
         throw new Error("Selected trading wallet does not match permission");
       const q = permission.quote;
+      const inputKind = q.inputKind ?? "erc20";
       const balanceData = token.encodeFunctionData("balanceOf", [q.account]);
-      const inputBalance = token.decodeFunctionResult(
-        "balanceOf",
-        await provider.call({ to: q.tokenIn, data: balanceData }),
-      )[0] as bigint;
+      const inputBalance =
+        inputKind === "native"
+          ? await provider.getBalance(q.account)
+          : (token.decodeFunctionResult(
+              "balanceOf",
+              await provider.call({ to: q.tokenIn, data: balanceData }),
+            )[0] as bigint);
       if (inputBalance < BigInt(q.amountIn))
-        throw new Error("Insufficient input token balance");
-      if (entry.approval) {
+        throw new Error("Insufficient input balance");
+      if (inputKind === "native" && entry.approval) {
+        throw new Error("Native-input trade must not contain an approval");
+      }
+      if (inputKind === "erc20" && entry.approval) {
         const approval = await resume(entry.approval, "approval");
         if (approval.status !== "confirmed") return approval;
-      } else {
+      } else if (inputKind === "erc20") {
         const data = token.encodeFunctionData("allowance", [
           q.account,
           SWAP_ROUTER02,
@@ -269,7 +290,7 @@ export async function executeTrade(
           parsed.from !== permission.quote.account ||
           parsed.to !== expected.to ||
           parsed.data !== expected.data ||
-          parsed.value !== 0n ||
+          parsed.value !== expected.value ||
           parsed.chainId !== 4663n ||
           parsed.nonce !== sent.nonce ||
           parsed.gasLimit > BigInt(permission.gasLimit) ||
@@ -361,6 +382,7 @@ export async function executeTrade(
             "Gas price exceeds permission or fee model unsupported",
           );
         const requiredNativeBalance =
+          transaction.value +
           gasLimit * fees.maxFeePerGas +
           BigInt(permission.minNativeReserveWei ?? "0");
         if ((await provider.getBalance(q.account)) < requiredNativeBalance)

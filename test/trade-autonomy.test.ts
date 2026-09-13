@@ -11,6 +11,7 @@ import {
   readAutonomyStatus,
   revokeAutonomy,
 } from "../src/trade-autonomy.js";
+import { ROBINHOOD_WETH9 } from "../src/dex.js";
 
 const account = "0x0000000000000000000000000000000000000001";
 const tokenIn = "0x0000000000000000000000000000000000000002";
@@ -81,6 +82,30 @@ test("confirm-each records the choice without granting standing authority", asyn
       mode: "confirm-each",
       executionAuthorized: false,
     });
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("native autonomy is pinned to the verified Robinhood WETH9 route", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "gossip-autonomy-"));
+  try {
+    await assert.rejects(
+      proposeAutonomy(
+        directory,
+        { ...proposal, inputKind: "native", inputToken: tokenIn },
+        1_900_000_000,
+      ),
+      /pinned Robinhood WETH9 route/u,
+    );
+
+    const nativePolicy = await proposeAutonomy(
+      directory,
+      { ...proposal, inputKind: "native", inputToken: ROBINHOOD_WETH9 },
+      1_900_000_000,
+    );
+    assert.equal(nativePolicy.inputKind, "native");
+    assert.equal(nativePolicy.inputToken, ROBINHOOD_WETH9);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

@@ -102,6 +102,8 @@ widens permissions.
 For the local single-trade preview, `trade quote` accepts `--address`,
 `--token-in`, `--token-out`, `--amount-in` in base units, `--fee 3000`,
 `--slippage-bps`, and `--deadline-seconds`, and returns unsigned JSON. Use
+`--input-kind native` and omit `--token-in` to spend exact native ETH through
+the pinned Robinhood WETH9 route. Use
 `trade authorize --quote ABSOLUTE_JSON --id STABLE_ID --gas-limit MAX
 --max-fee-wei MAX` only from an interactive terminal after explicit `CONFIRM`,
 then `trade execute --id STABLE_ID`; `trade revoke` revokes future local
@@ -114,8 +116,11 @@ and synthetic local contracts are the current evidence.
 Agents may keep passive market and limit intents with `trade order
 create|list|status|check|cancel`. These records are local, not onchain Uniswap
 limit orders. `order check` is a quote-only read and `ready` is not permission.
-Every fill must still pass through `trade authorize` with an interactive
-`CONFIRM`, followed by `trade execute`. Never start an autonomous order daemon.
+Every confirm-each fill must still pass through `trade authorize` with an
+interactive `CONFIRM`, followed by `trade execute`. An activated bounded policy
+may run quick buys, watcher occurrences and DCA occurrences through `trade
+automation tick` or the singleton foreground `trade automation run`; an
+external supervisor owns unattended restart and liveness.
 
 The six inherited standards are reported independently: EIP-55, EIP-191,
 EIP-712, ERC-1271, ERC-8004, and ERC-8128. A local helper or installed library

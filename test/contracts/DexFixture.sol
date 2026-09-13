@@ -42,7 +42,7 @@ contract DexQuoter {
 
 contract DexRouter {
     struct Params { address tokenIn; address tokenOut; uint24 fee; address recipient; uint256 amountIn; uint256 amountOutMinimum; uint160 sqrtPriceLimitX96; }
-    function multicall(uint256 deadline, bytes[] calldata data) external returns (bytes[] memory results) {
+    function multicall(uint256 deadline, bytes[] calldata data) external payable returns (bytes[] memory results) {
         require(block.timestamp <= deadline, "expired");
         results = new bytes[](data.length);
         for (uint256 i = 0; i < data.length; i++) {
@@ -51,10 +51,14 @@ contract DexRouter {
             results[i] = result;
         }
     }
-    function exactInputSingle(Params calldata params) external returns (uint256 amountOut) {
+    function exactInputSingle(Params calldata params) external payable returns (uint256 amountOut) {
         require(params.fee == 3000, "fee");
         require(params.amountIn >= 1, "amount");
-        require(DexToken(params.tokenIn).transferFrom(msg.sender, address(this), params.amountIn), "input");
+        if (msg.value == 0) {
+            require(DexToken(params.tokenIn).transferFrom(msg.sender, address(this), params.amountIn), "input");
+        } else {
+            require(msg.value == params.amountIn, "native-value");
+        }
         amountOut = params.amountIn * 2;
         require(amountOut >= params.amountOutMinimum, "minout");
         DexToken(params.tokenOut).mint(params.recipient == address(1) ? msg.sender : params.recipient, amountOut);

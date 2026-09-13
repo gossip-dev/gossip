@@ -67,7 +67,12 @@ Stop new autonomous work immediately with:
 gossip trade autonomy revoke --directory /absolute/state
 ```
 
-An active ERC-20 policy can execute a fixed or balance-percentage quick buy.
+For a native-input policy, replace `--token-in 0xINPUT_TOKEN` in the proposal
+above with `--input-kind native`. The kit pins Robinhood WETH9 as the pool input
+route; the wallet still spends native ETH.
+
+An active ERC-20 or native policy can execute a fixed or balance-percentage
+quick buy.
 The stable ID is also the recovery key after an approval, dropped response or
 pending transaction:
 
@@ -79,10 +84,12 @@ gossip trade buy --id buy-0002 --token-out 0xTOKEN \
   --spend-bps 1000 --directory /absolute/state
 ```
 
-`--spend-bps 1000` means exactly 10% of the current configured ERC-20 input
-balance. It never means native ETH while the native adapter is unavailable.
+`--spend-bps 1000` means exactly 10% of the configured input balance. Under a
+native policy this is 10% of the current ETH balance. The kit never silently
+reduces that amount: the request fails if it cannot also preserve the approved
+native reserve and worst-case gas budget.
 
-Watcher and DCA commands currently persist lifecycle definitions only:
+Watcher and DCA commands persist durable lifecycle definitions:
 
 ```sh
 gossip trade watcher create --id watch-1 --token-in 0xINPUT \
@@ -96,20 +103,40 @@ gossip trade dca create --id dca-1 --token-in 0xINPUT \
 ```
 
 Use `list`, `status`, `pause`, `resume`, and `cancel` under either command.
-Creating these definitions does not start a worker or grant execution.
+Use `--input-kind native` and omit `--token-in` for native-input strategies.
+Creating a definition does not grant authority. Run one deterministic pass or
+start the singleton foreground loop with:
+
+```sh
+gossip trade automation tick --directory /absolute/state
+gossip trade automation run --interval-seconds 30 --directory /absolute/state
+```
+
+The loop stops cleanly on SIGINT/SIGTERM and owns `trade-worker.lock`. It never
+removes a stale lock automatically; inspect the recorded process before doing
+that. Use an OS or host supervisor if the loop must survive logout or restart.
+
+In `confirm-each`, a triggered occurrence returns `awaiting-confirmation` and
+an exact quote. Save that quote, authorize its exact occurrence ID through the
+interactive `trade authorize` command, then run the same tick again. In
+`bounded-auto`, a matching strategy executes without another prompt under its
+exact policy revision. Pending retries reuse the same occurrence ID and signed
+bytes. DCA skips missed intervals instead of creating a burst.
 
 ## Delivery gates
 
-The repository currently implements policy proposal, activation, status,
-revocation, strict matching, conservative reservations, bounded ERC-20 quick
-buys, and durable watcher/DCA definitions. Quick buys use the existing
-transaction journal and revalidate their active parent policy before signing or
-broadcast. Watcher and DCA definitions do not execute yet.
+The repository implements policy proposal, activation, status, revocation,
+strict matching, conservative reservations, bounded ERC-20 and native quick
+buys, deterministic watcher/DCA ticks, and a singleton foreground worker. Every
+execution uses the existing transaction journal and revalidates its active
+parent policy before signing or broadcast.
 
-The remaining gates are:
+Production acceptance still requires:
 
-1. Quote evaluation and execution ticks for durable watcher/DCA occurrences.
-2. A verified Robinhood WETH9/native-input adapter for examples using ETH.
-3. Foreground worker and real Grok Bot, Hermes and OpenClaw acceptance runs.
+1. Real funded fork or mainnet acceptance for the pinned Robinhood pools chosen
+   by the owner, without granting broader token authority.
+2. Supervisor-specific restart acceptance for Grok Bot, Hermes and OpenClaw.
+3. An explicit confirmation-depth policy before claiming final settlement.
 
-Do not describe the kit as fully autonomous until all three gates have evidence.
+Local controlled-chain tests establish the execution logic; they do not claim a
+production trade or continuous host liveness.

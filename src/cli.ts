@@ -422,7 +422,17 @@ function safeError(error: unknown): string {
     error.message.startsWith("trade order requires") ||
     error.message.startsWith("Invalid trade autonomy arguments") ||
     error.message.startsWith("trade autonomy requires") ||
-    error.message.startsWith("Autonomy")
+    error.message.startsWith("Autonomy") ||
+    error.message.startsWith("trade automation requires") ||
+    error.message.startsWith("Automation") ||
+    error.message.startsWith("Another trading worker") ||
+    error.message.startsWith("Strategy") ||
+    error.message.startsWith("Watcher") ||
+    error.message.startsWith("Native") ||
+    error.message.startsWith("ERC-20") ||
+    error.message.startsWith("Input kind") ||
+    error.message.startsWith("Confirmed trade permission") ||
+    error.message.startsWith("Stored permission")
   )
     return error.message;
   if (

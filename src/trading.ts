@@ -11,7 +11,7 @@ import {
 } from "./trade-execution.js";
 import { getAddress, Interface } from "ethers";
 import { createNetworkProvider } from "./network.js";
-import { quoteExactInputSingle } from "./dex.js";
+import { quoteExactInputSingle, ROBINHOOD_WETH9 } from "./dex.js";
 import { WalletVault } from "./wallet.js";
 import { createCredentialStore } from "./credential-store.js";
 import {
@@ -41,6 +41,7 @@ import {
   pauseStrategy,
   resumeStrategy,
 } from "./trade-strategies.js";
+import { automationTick, runAutomationWorker } from "./trade-automation.js";
 
 export async function tradingCommand(
   directory: string,
@@ -60,6 +61,10 @@ export async function tradingCommand(
   }
   if (args[0] === "watcher" || args[0] === "dca") {
     await strategyCommand(directory, args[0], args.slice(1));
+    return;
+  }
+  if (args[0] === "automation") {
+    await automationCommand(directory, args.slice(1));
     return;
   }
   if (args[0] === "status") {
@@ -109,7 +114,9 @@ export async function tradingCommand(
           BigInt(permission.maxFeePerGas)
         ).toString(),
         approval:
-          "Exact input amount to SwapRouter02 if allowance is zero; output goes to the selected account.",
+          (permission.quote.inputKind ?? "erc20") === "native"
+            ? "Exact native input value to SwapRouter02; no ERC-20 approval; output goes to the selected account."
+            : "Exact input amount to SwapRouter02 if allowance is zero; output goes to the selected account.",
       }),
     );
     if (
@@ -165,13 +172,26 @@ export async function tradingCommand(
   }
   if (args[0] === "quote") {
     const account = getAddress(required(args, "--address"));
+    const requestedInputKind = optional(args, "--input-kind") ?? "erc20";
+    if (requestedInputKind !== "erc20" && requestedInputKind !== "native") {
+      throw new Error("Input kind must be erc20 or native");
+    }
+    const inputKind: "erc20" | "native" = requestedInputKind;
+    const configuredTokenIn = optional(args, "--token-in");
+    if (inputKind === "erc20" && configuredTokenIn === undefined) {
+      throw new Error("ERC-20 quote requires --token-in");
+    }
+    if (inputKind === "native" && configuredTokenIn !== undefined) {
+      throw new Error("Native quote pins WETH9; omit --token-in");
+    }
     const provider = await createNetworkProvider(directory);
     try {
       const quote = await quoteExactInputSingle({
         provider,
         recipient: account,
-        tokenIn: required(args, "--token-in"),
+        tokenIn: configuredTokenIn ?? ROBINHOOD_WETH9,
         tokenOut: required(args, "--token-out"),
+        inputKind,
         amountIn: required(args, "--amount-in"),
         fee: Number(required(args, "--fee")),
         slippageBps: Number(required(args, "--slippage-bps")),
@@ -205,6 +225,7 @@ async function strategyCommand(
       new Set([
         "--id",
         "--token-in",
+        "--input-kind",
         "--token-out",
         "--fee",
         "--slippage-bps",
@@ -229,11 +250,28 @@ async function strategyCommand(
             policyRevision: tradeMode.policy.revision,
           }
         : { kind: "confirm-each" as const };
+    const requestedStrategyInputKind =
+      optional(args, "--input-kind") ?? "erc20";
+    if (
+      requestedStrategyInputKind !== "erc20" &&
+      requestedStrategyInputKind !== "native"
+    ) {
+      throw new Error("Input kind must be erc20 or native");
+    }
+    const inputKind: "erc20" | "native" = requestedStrategyInputKind;
+    const configuredTokenIn = optional(args, "--token-in");
+    if (inputKind === "erc20" && configuredTokenIn === undefined) {
+      throw new Error("ERC-20 strategy requires --token-in");
+    }
+    if (inputKind === "native" && configuredTokenIn !== undefined) {
+      throw new Error("Native strategy pins WETH9; omit --token-in");
+    }
     const common = {
       kind,
       id: required(args, "--id"),
       account,
-      tokenIn: required(args, "--token-in"),
+      inputKind,
+      tokenIn: configuredTokenIn ?? ROBINHOOD_WETH9,
       tokenOut: required(args, "--token-out"),
       fee: numberOption(args, "--fee", 3000) as 100 | 500 | 3000 | 10000,
       slippageBps: numberOption(args, "--slippage-bps"),
@@ -244,6 +282,7 @@ async function strategyCommand(
       const actionKind = kind === "dca" ? "dca" : "watcher";
       if (
         !policy.actionKinds.includes(actionKind) ||
+        (policy.inputKind ?? "erc20") !== inputKind ||
         policy.inputToken !== getAddress(common.tokenIn) ||
         !policy.outputTokens.includes(getAddress(common.tokenOut)) ||
         !policy.feeTiers.includes(common.fee) ||
@@ -257,6 +296,7 @@ async function strategyCommand(
         ? await createWatcher(directory, {
             ...common,
             kind,
+            amountIn: optional(args, "--amount-in"),
             threshold: {
               comparison: required(args, "--comparison") as
                 | "at-or-above"
@@ -350,6 +390,7 @@ async function autonomousBuyCommand(
       "--fee",
       "--slippage-bps",
       "--deadline-seconds",
+      "--input-kind",
       "--directory",
     ]),
   );
@@ -362,6 +403,8 @@ async function autonomousBuyCommand(
       existing.authorizationSource.requestId === id
     ) {
       const source = existing.authorizationSource;
+      const suppliedInputKind =
+        optional(args, "--input-kind") ?? existing.quote.inputKind ?? "erc20";
       const suppliedSpendType = optional(args, "--spend-wei")
         ? "fixed"
         : "balance-bps";
@@ -370,6 +413,7 @@ async function autonomousBuyCommand(
       if (
         source.requestIntent.tokenOut !==
           getAddress(required(args, "--token-out")) ||
+        (source.requestIntent.inputKind ?? "erc20") !== suppliedInputKind ||
         source.requestIntent.spendType !== suppliedSpendType ||
         source.requestIntent.spendValue !== suppliedSpendValue
       ) {
@@ -394,16 +438,27 @@ async function autonomousBuyCommand(
   }
   const provider = await createNetworkProvider(directory);
   try {
+    const inputKind =
+      optional(args, "--input-kind") ?? policy.inputKind ?? "erc20";
+    if (inputKind !== "erc20" && inputKind !== "native") {
+      throw new Error("Input kind must be erc20 or native");
+    }
+    if (inputKind !== (policy.inputKind ?? "erc20")) {
+      throw new Error("Autonomy input kind does not match the active policy");
+    }
     const token = new Interface([
       "function balanceOf(address) view returns(uint256)",
     ]);
-    const balance = token.decodeFunctionResult(
-      "balanceOf",
-      await provider.call({
-        to: policy.inputToken,
-        data: token.encodeFunctionData("balanceOf", [account]),
-      }),
-    )[0] as bigint;
+    const balance =
+      inputKind === "native"
+        ? await provider.getBalance(account)
+        : (token.decodeFunctionResult(
+            "balanceOf",
+            await provider.call({
+              to: policy.inputToken,
+              data: token.encodeFunctionData("balanceOf", [account]),
+            }),
+          )[0] as bigint);
     const basisPoints = spendBps === undefined ? null : Number(spendBps);
     if (
       basisPoints !== null &&
@@ -441,6 +496,7 @@ async function autonomousBuyCommand(
       fee,
       slippageBps,
       deadlineSecs: deadlineSeconds,
+      inputKind,
     });
     const serializedQuote = JSON.parse(
       JSON.stringify(
@@ -453,6 +509,7 @@ async function autonomousBuyCommand(
       id,
       policyId: policy.id,
       actionKind: "quick-buy",
+      inputKind,
       account,
       tokenIn: policy.inputToken,
       tokenOut: required(args, "--token-out"),
@@ -482,6 +539,7 @@ async function autonomousBuyCommand(
         reservationFingerprint: reservation.fingerprint,
         requestIntent: {
           tokenOut: required(args, "--token-out"),
+          inputKind,
           spendType: spendWei === undefined ? "balance-bps" : "fixed",
           spendValue: spendWei ?? spendBps!,
         },
@@ -535,6 +593,7 @@ async function autonomyCommand(
     const allowed = new Set([
       "--id",
       "--token-in",
+      "--input-kind",
       "--token-out",
       "--allow",
       "--max-input-per-trade",
@@ -560,10 +619,22 @@ async function autonomyCommand(
       allowed,
       new Set(["--token-out", "--allow", "--fee"]),
     );
+    const inputKind = optional(args, "--input-kind") ?? "erc20";
+    if (inputKind !== "erc20" && inputKind !== "native") {
+      throw new Error("Input kind must be erc20 or native");
+    }
+    const tokenIn = optional(args, "--token-in");
+    if (inputKind === "erc20" && tokenIn === undefined) {
+      throw new Error("ERC-20 autonomy requires --token-in");
+    }
+    if (inputKind === "native" && tokenIn !== undefined) {
+      throw new Error("Native autonomy pins WETH9; omit --token-in");
+    }
     const policy = await proposeAutonomy(directory, {
       id: required(args, "--id"),
       account: await configuredIdentity(directory),
-      inputToken: required(args, "--token-in"),
+      inputKind,
+      inputToken: tokenIn ?? ROBINHOOD_WETH9,
       outputTokens: allOptions(args, "--token-out"),
       actionKinds: allOptions(args, "--allow") as (
         | "quick-buy"
@@ -637,6 +708,42 @@ async function autonomyCommand(
   throw new Error(
     "trade autonomy requires status, choose, propose, activate, or revoke",
   );
+}
+
+async function automationCommand(
+  directory: string,
+  args: string[],
+): Promise<void> {
+  if (args[0] !== "tick") {
+    if (args[0] !== "run") {
+      throw new Error("trade automation requires tick or run");
+    }
+    validateOrderArguments(
+      args,
+      new Set(["--interval-seconds", "--directory"]),
+    );
+    const controller = new AbortController();
+    const stop = () => controller.abort();
+    process.once("SIGINT", stop);
+    process.once("SIGTERM", stop);
+    try {
+      await runAutomationWorker(
+        directory,
+        await configuredIdentity(directory),
+        {
+          intervalSeconds: numberOption(args, "--interval-seconds", 30),
+          signal: controller.signal,
+          onTick: output,
+        },
+      );
+    } finally {
+      process.off("SIGINT", stop);
+      process.off("SIGTERM", stop);
+    }
+    return;
+  }
+  validateOrderArguments(args, new Set(["--directory"]));
+  output(await automationTick(directory, await configuredIdentity(directory)));
 }
 
 async function orderCommand(directory: string, args: string[]): Promise<void> {

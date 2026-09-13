@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { getAddress, isAddress } from "ethers";
 import { z } from "zod";
 import { withTradeLock, writeTradeFile } from "./trade-state.js";
+import { ROBINHOOD_WETH9 } from "./dex.js";
 
 const POLICY_FILE = "trade-autonomy.json";
 const MODE_FILE = "trade-mode.json";
@@ -32,6 +33,7 @@ export const autonomyProposalSchema = z
   .object({
     id: idSchema,
     account: addressSchema,
+    inputKind: z.enum(["erc20", "native"]).optional(),
     inputToken: addressSchema,
     outputTokens: z.array(addressSchema).min(1).max(64),
     actionKinds: z.array(actionKindSchema).min(1).max(3),
@@ -54,6 +56,16 @@ export const autonomyProposalSchema = z
   })
   .strict()
   .superRefine((proposal, context) => {
+    if (
+      proposal.inputKind === "native" &&
+      proposal.inputToken !== getAddress(ROBINHOOD_WETH9)
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["inputToken"],
+        message: "native input must use the pinned Robinhood WETH9 route",
+      });
+    }
     if (proposal.outputTokens.includes(proposal.inputToken)) {
       context.addIssue({
         code: "custom",
@@ -100,6 +112,7 @@ const autonomousRequestSchema = z
     policyId: idSchema,
     actionKind: actionKindSchema,
     account: addressSchema,
+    inputKind: z.enum(["erc20", "native"]).optional(),
     tokenIn: addressSchema,
     tokenOut: addressSchema,
     amountIn: positiveUintSchema,
@@ -434,6 +447,9 @@ function assertRequestWithinPolicy(
   }
   if (policy.inputToken !== request.tokenIn) {
     throw new Error("Autonomy input token is not allowed");
+  }
+  if ((policy.inputKind ?? "erc20") !== (request.inputKind ?? "erc20")) {
+    throw new Error("Autonomy input kind is not allowed");
   }
   if (!policy.outputTokens.includes(request.tokenOut)) {
     throw new Error("Autonomy output token is not allowed");

@@ -114,7 +114,7 @@ bounded, explicitly authorized wallet policy pass balance, quote, simulation,
 allowance, gas, and signing checks. Setup must not fund, approve, broadcast,
 register, or broaden permissions.
 
-The local trading preview is explicit and single-trade scoped:
+The confirm-each trading path is explicit and single-trade scoped:
 
 ```text
 node dist/cli.js trade quote --address WALLET --token-in TOKEN --token-out TOKEN --amount-in BASE_UNITS --fee 3000 --slippage-bps 100 --deadline-seconds 300 --directory ABSOLUTE_STATE
@@ -131,6 +131,14 @@ allowed only when current allowance is zero; nonzero insufficient allowance is
 blocked. The execution journal preserves retry identity and reports pending
 transactions without creating a new trade. No live DEX swap has been tested;
 only official deployment addresses and synthetic local contracts are evidence.
+
+For native input, add `--input-kind native` and omit `--token-in`; the route is
+pinned to the verified Robinhood WETH9 deployment and transaction value is the
+exact requested wei amount. Bounded mode, quick buys, watchers, DCA schedules,
+and the singleton foreground automation worker are documented in
+[`autonomous-trading.md`](autonomous-trading.md). Setup may install their
+operating rules additively into the user-selected instruction file, but it does
+not activate a spending policy or start the worker.
 
 `trade order create|list|status|check|cancel` maintains a durable local intent
 book. It does not install an onchain limit-order protocol or grant standing

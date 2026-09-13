@@ -4,6 +4,7 @@ export const ROBINHOOD_CHAIN_ID = 4663n;
 export const SWAP_ROUTER02 = "0xCaf681a66D020601342297493863E78C959E5cb2";
 export const QUOTER_V2 = "0x33e885eD0Ec9bF04EcfB19341582aADCb4c8A9E7";
 export const V3_FACTORY = "0x1f7d7550b1b028f7571e69a784071f0205fd2efa";
+export const ROBINHOOD_WETH9 = "0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73";
 
 const FACTORY_ABI = [
   "function getPool(address,address,uint24) view returns (address)",
@@ -29,6 +30,7 @@ export interface ExactInputQuoteRequest {
   deadlineSecs: number;
   recipient?: string;
   nowSecs?: number;
+  inputKind?: "erc20" | "native";
 }
 
 export interface ExactInputQuote {
@@ -39,6 +41,7 @@ export interface ExactInputQuote {
   pool: string;
   tokenIn: string;
   tokenOut: string;
+  inputKind: "erc20" | "native";
   fee: number;
   amountIn: bigint;
   quotedAmountOut: bigint;
@@ -88,6 +91,10 @@ export async function quoteExactInputSingle(
       : request.amountIn;
   if (amountIn <= 0n || amountIn >= 2n ** 256n)
     throw new Error("amountIn must be positive");
+  const inputKind = request.inputKind ?? "erc20";
+  if (inputKind === "native" && tokenIn !== getAddress(ROBINHOOD_WETH9)) {
+    throw new Error("Native input must use the pinned Robinhood WETH9 route");
+  }
 
   const [tokenInCode, tokenOutCode] = await Promise.all([
     request.provider.getCode(tokenIn),
@@ -150,6 +157,7 @@ export async function quoteExactInputSingle(
     pool,
     tokenIn,
     tokenOut,
+    inputKind,
     fee: request.fee,
     amountIn,
     quotedAmountOut,
@@ -163,6 +171,7 @@ export async function quoteExactInputSingle(
       amountIn,
       amountOutMinimum,
       deadline,
+      inputKind,
     }),
   };
 }
@@ -175,6 +184,7 @@ export function buildSwapTransaction(input: {
   amountIn: bigint;
   amountOutMinimum: bigint;
   deadline: bigint;
+  inputKind?: "erc20" | "native";
 }): { to: string; data: string; value: bigint } {
   const swapData = ROUTER_INTERFACE.encodeFunctionData("exactInputSingle", [
     { ...input, sqrtPriceLimitX96: 0 },
@@ -185,7 +195,7 @@ export function buildSwapTransaction(input: {
       input.deadline,
       [swapData],
     ]),
-    value: 0n,
+    value: input.inputKind === "native" ? input.amountIn : 0n,
   };
 }
 

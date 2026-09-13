@@ -2,9 +2,10 @@
 
 ## Status
 
-Accepted architecture; delivery is incremental. The policy and mode-selection
-slice is implemented. Automated signing, native ETH input, watchers, DCA and a
-supervised worker remain gated until their acceptance tests pass.
+Accepted and implemented for local controlled-chain acceptance: policy and mode
+selection, bounded signing, native ETH input, watcher/DCA ticks, and a singleton
+foreground worker. Production host supervision and funded-chain acceptance
+remain separate evidence gates.
 
 ## Decision
 
@@ -44,12 +45,13 @@ worker requires an external supervisor for unattended liveness.
 
 ## Native ETH boundary
 
-The current adapter only supports ERC-20 exact-input swaps and always sends zero
-transaction value. Native ETH quick buys require a separately verified WETH9
-deployment and reviewed wrap-and-swap calldata for Robinhood Chain. The kit must
-not reinterpret ETH as an arbitrary ERC-20 address. Until that adapter and its
-fixtures pass, fixed and percentage quick buys are limited to the explicitly
-configured ERC-20 input asset.
+Native input is an explicit policy kind. It pins Robinhood WETH9
+`0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73` as the Uniswap pool route and
+sends the exact approved ETH amount as SwapRouter02 transaction value. It skips
+ERC-20 approval and requires the post-spend balance to retain the configured
+native reserve plus worst-case gas. The deployment is recorded by the official
+Uniswap contracts inventory and was independently checked through chain 4663
+RPC. No other token can be interpreted as native input.
 
 ## Consequences
 
@@ -58,4 +60,3 @@ requested. Choosing `bounded-auto` is not enough by itself: the owner must also
 activate concrete limits. Revocation prevents new signatures and rebroadcasts,
 but cannot undo a transaction already broadcast or remove an existing token
 allowance.
-

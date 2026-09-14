@@ -20,7 +20,7 @@ Every prompt below uses these exact values:
 | Item                   | Value                                                    |
 | ---------------------- | -------------------------------------------------------- |
 | Kit repository         | `https://github.com/gossip-dev/gossip`                   |
-| Kit source commit      | `55046ead7d98b9a89c41663d9cba49c37d96417b`                    |
+| Kit source commit      | `db579d6025c7311a5567795291869a14e3669a90`               |
 | Runtime                | Node.js 24 or newer                                      |
 | MCP endpoint           | `https://api.gossip-protocol.xyz/mcp`                    |
 | Capabilities URL       | `https://api.gossip-protocol.xyz/v2/gossip/capabilities` |
@@ -73,6 +73,10 @@ The four prompts share these requirements:
   gas, fee, native-reserve and expiry bound; show the complete proposal; and
   require the one-time local interactive activation. Never treat mode choice
   alone as spending authority.
+- Never ask the owner or agent to discover a pool or choose a fee tier. Pass
+  the token, amount or balance percentage, slippage and deadline bounds to the
+  local CLI. It discovers the best policy-allowed route; `--fee` is reserved
+  for an explicit advanced override.
 - Configure the exact endpoint, audience, profile, and RPC above. Check the
   signed capabilities response and MCP `initialize` plus `tools/list` before
   describing a connection.
@@ -108,7 +112,7 @@ Set up the Gossip Agent Kit from the pinned public repository and leave a
 reviewable evidence report. Use only the exact facts below:
 
 - repository: https://github.com/gossip-dev/gossip
-- required source commit: 55046ead7d98b9a89c41663d9cba49c37d96417b
+- required source commit: db579d6025c7311a5567795291869a14e3669a90
 - Node.js: 24 or newer
 - endpoint: https://api.gossip-protocol.xyz/mcp
 - capabilities: https://api.gossip-protocol.xyz/v2/gossip/capabilities
@@ -155,6 +159,10 @@ direct commands map immediate buys to trade buy, recurring buys to DCA, and
 price conditions to watchers. Use native input only when explicitly selected;
 "10% of my ETH balance" means exactly 1000 basis points and must still preserve
 the configured ETH reserve and worst-case gas.
+Do not ask me for a pool address or Uniswap fee tier. Give the local CLI the
+token, amount or balance percentage, slippage and deadline bounds; it must
+discover the best policy-allowed route. Use --fee only if I explicitly request
+that advanced override.
 The local bridge is the signer and must sign each request; do not implement or
 duplicate cryptography in a wrapper. The normal v2 bridge compensates for a
 host clock skew below 300 seconds from the exact HTTPS endpoint Date header;
@@ -195,7 +203,7 @@ Use this variant when the actual environment is the Grok Bot host:
 ```text
 Prepare Gossip Agent Kit for the actual Grok Bot environment using only this
 pin: repository https://github.com/gossip-dev/gossip at commit
-55046ead7d98b9a89c41663d9cba49c37d96417b and Node.js 24+. Build from that
+db579d6025c7311a5567795291869a14e3669a90 and Node.js 24+. Build from that
 pinned source by default. Use scripts/install.mjs only when the exact local .tgz
 and its independently supplied SHA-256 digest are both available; a digest does
 not locate the package. The endpoint is https://api.gossip-protocol.xyz/mcp, the
@@ -226,8 +234,12 @@ absolute path; otherwise do not invent a path and report instruction injection
 pending. Ask me now to choose confirm-each or bounded-auto. Record the former;
 for the latter, collect every concrete bound, show the proposal, and require its
 one-time local activation before any autonomous action. Configure the exact
-endpoint, audience, profile, and RPC. Let the local bridge sign every request;
-do not duplicate its cryptography. The normal bridge handles a host clock skew
+endpoint, audience, profile, and RPC. Do not ask me for a pool address or
+Uniswap fee tier. Give the CLI the token, amount or balance percentage,
+slippage and deadline bounds so it discovers the best policy-allowed route.
+Use --fee only if I explicitly request that advanced override. Let the local
+bridge sign every request; do not duplicate its cryptography. The normal bridge
+handles a host clock skew
 below 300 seconds from the exact HTTPS endpoint Date header; do not install a
 skew wrapper.
 Check signed capabilities plus MCP initialize and tools/list, and record replay=401 and invalid-signature=401 when probed.
@@ -269,7 +281,7 @@ Use this variant when the actual environment is Hermes. Replace every
 ```text
 Set up the pinned Gossip Agent Kit for Hermes. Verify repository
 https://github.com/gossip-dev/gossip at commit
-55046ead7d98b9a89c41663d9cba49c37d96417b and use Node.js 24+. Build from that
+db579d6025c7311a5567795291869a14e3669a90 and use Node.js 24+. Build from that
 pinned source by default. Use scripts/install.mjs only when the exact local .tgz
 and its independently supplied SHA-256 digest are both available. Configure
 endpoint https://api.gossip-protocol.xyz/mcp,
@@ -298,6 +310,10 @@ documented active AGENTS.md, .hermes.md, or equivalent instruction file and
 install the managed Gossip block there using its absolute path; never guess.
 Ask me now to choose confirm-each or bounded-auto, recording the former or
 showing every bound and requiring one-time local activation for the latter.
+Do not ask me for a pool address or Uniswap fee tier. Give the local CLI the
+token, amount or balance percentage, slippage and deadline bounds so it
+discovers the best policy-allowed route. Use --fee only if I explicitly request
+that advanced override.
 The local gossip serve process uses the selected absolute state directory and
 signs each request locally. Do not invent a remote MCP configuration or duplicate
 cryptographic code.
@@ -330,7 +346,7 @@ Use this variant when the actual environment is OpenClaw. Replace every
 ```text
 Set up the pinned Gossip Agent Kit for OpenClaw. Verify repository
 https://github.com/gossip-dev/gossip at commit
-55046ead7d98b9a89c41663d9cba49c37d96417b and use Node.js 24+. Build from that
+db579d6025c7311a5567795291869a14e3669a90 and use Node.js 24+. Build from that
 pinned source by default. Use scripts/install.mjs only when the exact local .tgz
 and its independently supplied SHA-256 digest are both available. Configure
 endpoint https://api.gossip-protocol.xyz/mcp,
@@ -362,8 +378,11 @@ accepted the server. Identify OpenClaw's documented active AGENTS.md or
 equivalent instruction file and install the managed Gossip block there using
 its absolute path. Ask me now to choose confirm-each or bounded-auto, recording
 the former or showing every bound and requiring one-time local activation for
-the latter. The local gossip serve process signs every request; do not invent a
-remote configuration or duplicate cryptographic code.
+the latter. Do not ask me for a pool address or Uniswap fee tier. Give the local
+CLI the token, amount or balance percentage, slippage and deadline bounds so it
+discovers the best policy-allowed route. Use --fee only if I explicitly request
+that advanced override. The local gossip serve process signs every request; do
+not invent a remote configuration or duplicate cryptographic code.
 
 Choose exactly one path: reuse an existing Gossip Identity, attach an existing
 local EOA with raw-hex/json-privateKey/json-private_key while preserving the

@@ -89,6 +89,13 @@ native policy this is 10% of the current ETH balance. The kit never silently
 reduces that amount: the request fails if it cannot also preserve the approved
 native reserve and worst-case gas budget.
 
+Quick buys, watchers, and DCA occurrences do not require a pool address or fee
+tier. The kit checks every fee tier allowed by the active policy and selects the
+highest successful quote with a stable policy-order tie-break. `--fee` remains
+an optional advanced override and must name one of those allowed tiers. A
+rate-limit failure that prevents a complete check is reported as retryable
+route discovery failure, never as no liquidity.
+
 Watcher and DCA commands persist durable lifecycle definitions:
 
 ```sh

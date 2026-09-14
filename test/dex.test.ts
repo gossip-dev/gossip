@@ -587,8 +587,6 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
         tokenOutAddress,
         "--spend-wei",
         "1000",
-        "--fee",
-        "3000",
         "--slippage-bps",
         "100",
         "--deadline-seconds",
@@ -599,6 +597,24 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
       await execute(process.execPath, autonomousBuy, { env: cliEnv });
       await execute(process.execPath, autonomousBuy, { env: cliEnv });
       assert.equal(await output.balanceOf(recipient), 7000n);
+
+      const legacyPermission = JSON.parse(
+        await readFile(join(state, "trade-permission.json"), "utf8"),
+      );
+      delete legacyPermission.authorizationSource.requestIntent.feeSelection;
+      await writeFile(
+        join(state, "trade-permission.json"),
+        JSON.stringify(legacyPermission),
+      );
+      const changedLegacyFee = [
+        ...autonomousBuy.slice(0, -2),
+        "--fee",
+        "100",
+        ...autonomousBuy.slice(-2),
+      ];
+      await assert.rejects(
+        execute(process.execPath, changedLegacyFee, { env: cliEnv }),
+      );
 
       await execute(
         process.execPath,
@@ -651,8 +667,6 @@ test("quotes and executes exact-input through a controlled chain4663 RPC", async
         tokenOutAddress,
         "--spend-wei",
         "500",
-        "--fee",
-        "3000",
         "--slippage-bps",
         "100",
         "--deadline-seconds",

@@ -17,6 +17,7 @@ const DIGEST_PATTERN = /^[0-9a-f]{64}$/u;
 const MAX_INSTRUCTION_BYTES = 1024 * 1024;
 const UPGRADEABLE_DIGESTS = new Set([
   "6ccb3de2d816e431bd1160f2209527e475504d0f57c1489d6694bc9de0863474",
+  "727bd7e2c7c6986cd96f9db4208db76c891af418ccde9528cb17e87b060751b5",
 ]);
 const BLOCK_TEXT = [
   "## Gossip Agent Kit",
@@ -28,7 +29,9 @@ const BLOCK_TEXT = [
   "show the complete proposal, and require its one-time local activation.",
   "After activation, execute clear user trade commands and due authorized",
   "watcher/DCA occurrences without asking again, but only inside that exact policy",
-  "revision. Never infer a missing asset, amount, route, or permission.",
+  "revision. Never infer a missing asset, amount, or permission. Supply the token,",
+  "amount or balance percentage, and bounds; the kit discovers the best allowed",
+  "Uniswap V3 pool and fee tier. Use `--fee` only for an explicit advanced override.",
   "",
   "Treat direct commands such as `buy TOKEN with 0.01 ETH` as a fixed native-input",
   "request and `buy TOKEN with 10% of my ETH balance` as 1000 basis points only",

@@ -117,13 +117,15 @@ register, or broaden permissions.
 The confirm-each trading path is explicit and single-trade scoped:
 
 ```text
-node dist/cli.js trade quote --address WALLET --token-in TOKEN --token-out TOKEN --amount-in BASE_UNITS --fee 3000 --slippage-bps 100 --deadline-seconds 300 --directory ABSOLUTE_STATE
+node dist/cli.js trade quote --address WALLET --token-in TOKEN --token-out TOKEN --amount-in BASE_UNITS --slippage-bps 100 --deadline-seconds 300 --directory ABSOLUTE_STATE
 node dist/cli.js trade authorize --quote /absolute/quote.json --id STABLE_ID --gas-limit MAX --max-fee-wei MAX --directory ABSOLUTE_STATE
 node dist/cli.js trade execute --id STABLE_ID --directory ABSOLUTE_STATE
 node dist/cli.js trade revoke --directory ABSOLUTE_STATE
 ```
 
-Quotes output unsigned JSON. Authorization requires an interactive terminal
+Quotes discover the best standard Uniswap V3 fee tier and output unsigned JSON
+with the chosen pool and fee bound into the transaction. `--fee` is an optional
+advanced single-tier override. Authorization requires an interactive terminal
 `CONFIRM`, is for one trade, and is never standing autonomous permission. Local
 managed EOAs and explicitly attached local-file keys are read only inside
 trusted local code; Gossip does not custody them. Exact-amount approval is

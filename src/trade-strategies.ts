@@ -72,7 +72,7 @@ const commonInputSchema = z
     inputKind: z.enum(["erc20", "native"]).optional(),
     tokenIn: addressSchema,
     tokenOut: addressSchema,
-    fee: feeSchema,
+    fee: feeSchema.optional(),
     slippageBps: z.number().int().min(0).max(9_999),
     authorization: strategyAuthorizationSchema,
   })
@@ -115,7 +115,7 @@ const strategyBaseSchema = z
     inputKind: z.enum(["erc20", "native"]).optional(),
     tokenIn: addressSchema,
     tokenOut: addressSchema,
-    fee: feeSchema,
+    fee: feeSchema.optional(),
     slippageBps: z.number().int().min(0).max(9_999),
     authorization: strategyAuthorizationSchema,
     status: statusSchema,

@@ -100,8 +100,10 @@ and signing path exist. Setup never funds, approves, broadcasts, registers, or
 widens permissions.
 
 For the local single-trade preview, `trade quote` accepts `--address`,
-`--token-in`, `--token-out`, `--amount-in` in base units, `--fee 3000`,
-`--slippage-bps`, and `--deadline-seconds`, and returns unsigned JSON. Use
+`--token-in`, `--token-out`, `--amount-in` in base units, `--slippage-bps`, and
+`--deadline-seconds`, and returns unsigned JSON. The CLI discovers the best
+quote across the standard allowed Uniswap V3 fee tiers; `--fee` remains an
+advanced single-tier override. Use
 `--input-kind native` and omit `--token-in` to spend exact native ETH through
 the pinned Robinhood WETH9 route. Use
 `trade authorize --quote ABSOLUTE_JSON --id STABLE_ID --gas-limit MAX

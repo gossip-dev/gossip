@@ -21,8 +21,11 @@ gossip trade order create \
   --directory /absolute/state
 ```
 
-`--fee` defaults to the Uniswap V3 `3000` tier. `amountIn` uses integer token
-base units. `limitPrice` is a positive plain-decimal ratio of token-out base
+The intent does not need a pool address or fee tier. At check time, the kit
+quotes the standard Uniswap V3 tiers and deterministically selects the highest
+output. `--fee` preserves an advanced single-tier override, and older stored
+orders with a fee continue to use that tier. `amountIn` uses integer token base
+units. `limitPrice` is a positive plain-decimal ratio of token-out base
 units per token-in base unit, with at most 18 fractional digits. A limit is
 reachable only when the fresh quote's `amountOutMinimum / amountIn` is at least
 that ratio. This comparison includes the selected slippage bound and uses exact
@@ -38,7 +41,7 @@ gossip trade order check --id limit-buy-1 --directory /absolute/state
 gossip trade order cancel --id limit-buy-1 --directory /absolute/state
 ```
 
-`order check` calls the existing QuoterV2 read path. A market order becomes
+`order check` calls the QuoterV2 route-discovery path. A market order becomes
 `ready` after a successful quote. A limit order becomes `ready` when the limit
 is reachable and returns the permission-compatible quote as `preparedQuote`.
 If a later check no longer meets the limit, the order returns to `open`.

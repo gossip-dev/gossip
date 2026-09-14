@@ -96,7 +96,6 @@ test("confirm-each tick stops at an explicit state and keeps the occurrence dura
         account,
         tokenIn,
         tokenOut,
-        fee: 3000,
         slippageBps: 100,
         authorization: { kind: "confirm-each" },
         amountIn: "100",
@@ -234,7 +233,6 @@ test("bounded DCA retries the same operation after a pending execution", async (
         account,
         tokenIn,
         tokenOut,
-        fee: 3000,
         slippageBps: 100,
         authorization: {
           kind: "standing-envelope",
@@ -250,11 +248,13 @@ test("bounded DCA retries the same operation after a pending execution", async (
     );
 
     let quoteCalls = 0;
+    let requestedFeeTiers: readonly number[] = [];
     const operationIds: string[] = [];
     let attempts = 0;
     const dependencies = {
-      quote: async ({ amountIn, now }: { amountIn: bigint; now: number }) => {
+      quote: async ({ amountIn, now, feeTiers }) => {
         quoteCalls += 1;
+        requestedFeeTiers = feeTiers;
         return quote(amountIn, 200n, now);
       },
       inputBalance: async () => 1000n,
@@ -272,6 +272,8 @@ test("bounded DCA retries the same operation after a pending execution", async (
     assert.equal(first.occurrences[0]?.status, "pending");
     assert.equal(retry.occurrences[0]?.status, "completed");
     assert.equal(quoteCalls, 1);
+    assert.deepEqual(requestedFeeTiers, [3000]);
+    assert.equal((await readPermission(directory)).quote.fee, 3000);
     assert.deepEqual(operationIds, [
       "bounded-dca_run_000001",
       "bounded-dca_run_000001",

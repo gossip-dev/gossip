@@ -79,6 +79,15 @@ export const permissionSchema = z
             inputKind: z.enum(["erc20", "native"]).optional(),
             spendType: z.enum(["fixed", "balance-bps"]),
             spendValue: uint,
+            feeSelection: z
+              .union([
+                z.literal("auto"),
+                z.literal(100),
+                z.literal(500),
+                z.literal(3000),
+                z.literal(10000),
+              ])
+              .optional(),
           })
           .strict(),
       })

@@ -133,7 +133,6 @@ test("trade order CLI creates, lists, summarizes, and cancels local intents", as
         tokenOut,
         amountIn: "1000",
         limitPrice: "1.25",
-        fee: 3000,
         slippageBps: 100,
         deadlineSeconds: 120,
         account,

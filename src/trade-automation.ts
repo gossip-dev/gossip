@@ -2,7 +2,12 @@ import { Interface, getAddress } from "ethers";
 import { mkdir, open, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { createNetworkProvider } from "./network.js";
-import { quoteExactInputSingle, type ExactInputQuote } from "./dex.js";
+import {
+  resolveExactInputQuote,
+  UNISWAP_V3_FEE_TIERS,
+  type ExactInputQuote,
+  type UniswapV3FeeTier,
+} from "./dex.js";
 import {
   authorizeAutonomousRequest,
   readActiveAutonomyPolicy,
@@ -34,6 +39,7 @@ export type AutomationQuoteRequest = {
   amountIn: bigint;
   now: number;
   deadlineSeconds: number;
+  feeTiers: readonly UniswapV3FeeTier[];
 };
 
 export type AutomationTickDependencies = {
@@ -261,6 +267,10 @@ async function processOccurrence(
       amountIn: BigInt(occurrence.amountIn),
       now,
       deadlineSeconds: policy?.maxDeadlineSeconds ?? 300,
+      feeTiers:
+        strategy.fee === undefined
+          ? (policy?.feeTiers ?? UNISWAP_V3_FEE_TIERS)
+          : [strategy.fee],
     });
   } catch (error) {
     return { ...base, status: "failed", reason: errorMessage(error) };
@@ -319,7 +329,7 @@ async function processOccurrence(
         tokenOut: strategy.tokenOut,
         amountIn: occurrence.amountIn,
         inputBalance: inputBalance.toString(),
-        fee: strategy.fee,
+        fee: quote.fee as UniswapV3FeeTier,
         slippageBps: strategy.slippageBps,
         deadlineSeconds: policy.maxDeadlineSeconds,
         gasLimit: policy.gasLimit,
@@ -456,7 +466,7 @@ function assertQuoteMatchesStrategy(
     getAddress(quote.tokenIn) !== strategy.tokenIn ||
     getAddress(quote.tokenOut) !== strategy.tokenOut ||
     quote.inputKind !== (strategy.inputKind ?? "erc20") ||
-    quote.fee !== strategy.fee ||
+    (strategy.fee !== undefined && quote.fee !== strategy.fee) ||
     quote.amountIn !== BigInt(amountIn) ||
     quote.deadline <= BigInt(now) ||
     quote.deadline > BigInt(now + maxDeadlineSeconds)
@@ -479,7 +489,7 @@ function assertStrategyPolicy(
     policy.inputToken !== strategy.tokenIn ||
     !policy.outputTokens.includes(strategy.tokenOut) ||
     !policy.actionKinds.includes(strategy.kind) ||
-    !policy.feeTiers.includes(strategy.fee) ||
+    (strategy.fee !== undefined && !policy.feeTiers.includes(strategy.fee)) ||
     strategy.slippageBps > policy.maxSlippageBps
   ) {
     throw new Error("Strategy no longer fits the active autonomy policy");
@@ -514,7 +524,7 @@ function assertConfirmEachPermission(
     permission.quote.tokenOut !== strategy.tokenOut ||
     (permission.quote.inputKind ?? "erc20") !==
       (strategy.inputKind ?? "erc20") ||
-    permission.quote.fee !== strategy.fee ||
+    (strategy.fee !== undefined && permission.quote.fee !== strategy.fee) ||
     permission.quote.amountIn !== occurrence.amountIn
   ) {
     throw new Error(
@@ -571,7 +581,8 @@ function assertPermissionForOccurrence(
     permission.quote.tokenOut !== strategy.tokenOut ||
     (permission.quote.inputKind ?? "erc20") !==
       (strategy.inputKind ?? "erc20") ||
-    permission.quote.fee !== strategy.fee ||
+    !policy.feeTiers.includes(permission.quote.fee) ||
+    (strategy.fee !== undefined && permission.quote.fee !== strategy.fee) ||
     permission.quote.amountIn !== occurrence.amountIn
   ) {
     throw new Error("Existing trade permission does not match occurrence");
@@ -604,15 +615,17 @@ async function defaultQuote(
   directory: string,
   request: AutomationQuoteRequest,
 ): Promise<ExactInputQuote> {
-  const provider = await createNetworkProvider(directory);
+  const provider = await createNetworkProvider(directory, {
+    retryReadiness: {},
+  });
   try {
-    return await quoteExactInputSingle({
+    return await resolveExactInputQuote({
       provider,
       recipient: request.strategy.account,
       tokenIn: request.strategy.tokenIn,
       tokenOut: request.strategy.tokenOut,
       amountIn: request.amountIn,
-      fee: request.strategy.fee,
+      feeTiers: request.feeTiers,
       slippageBps: request.strategy.slippageBps,
       deadlineSecs: request.deadlineSeconds,
       nowSecs: request.now,

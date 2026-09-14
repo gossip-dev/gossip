@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { dirname, join } from "node:path";
 import { parse, stringify } from "yaml";
 import { Interface, formatUnits, getAddress, isAddress } from "ethers";
+import { retryTransientRpc, type RpcRetryOptions } from "./rpc-retry.js";
 
 const DEFAULT_RPC = "https://robinhood-rpc.publicnode.com";
 const CHAIN_ID = 4663;
@@ -110,8 +111,20 @@ async function rpc(
     });
     if (response.status >= 300 && response.status < 400)
       throw new Error("RPC redirects are not allowed");
-    if (!response.ok)
-      throw new Error(`RPC request failed (${response.status})`);
+    if (!response.ok) {
+      const error = new Error(
+        `RPC request failed (${response.status})`,
+      ) as Error & {
+        status: number;
+        retryAfter?: string;
+      };
+      error.status = response.status;
+      const retryAfter = response.headers.get("retry-after");
+      if (retryAfter !== null) {
+        error.retryAfter = retryAfter;
+      }
+      throw error;
+    }
     const payload: unknown = JSON.parse(
       Buffer.from(await readRpcBody(response)).toString("utf8"),
     );
@@ -351,10 +364,20 @@ export async function networkCommand(
   );
 }
 
-export async function createNetworkProvider(directory: string) {
+export async function createNetworkProvider(
+  directory: string,
+  options: { retryReadiness?: RpcRetryOptions } = {},
+) {
   const { FetchRequest, JsonRpcProvider } = await import("ethers");
   const config = await loadNetwork(directory);
-  await checkNetwork(directory);
+  if (options.retryReadiness === undefined) {
+    await checkNetwork(directory);
+  } else {
+    await retryTransientRpc(
+      () => checkNetwork(directory),
+      options.retryReadiness,
+    );
+  }
   const request = new FetchRequest(config.rpc);
   request.timeout = RPC_TIMEOUT_MS;
   request.setThrottleParams({ maxAttempts: 1 });

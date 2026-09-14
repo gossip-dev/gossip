@@ -11,7 +11,13 @@ import {
 } from "./trade-execution.js";
 import { getAddress, Interface } from "ethers";
 import { createNetworkProvider } from "./network.js";
-import { quoteExactInputSingle, ROBINHOOD_WETH9 } from "./dex.js";
+import {
+  resolveExactInputQuote,
+  ROBINHOOD_WETH9,
+  UNISWAP_V3_FEE_TIERS,
+  type UniswapV3FeeTier,
+} from "./dex.js";
+import { retryTransientRpc } from "./rpc-retry.js";
 import { WalletVault } from "./wallet.js";
 import { createCredentialStore } from "./credential-store.js";
 import {
@@ -184,16 +190,18 @@ export async function tradingCommand(
     if (inputKind === "native" && configuredTokenIn !== undefined) {
       throw new Error("Native quote pins WETH9; omit --token-in");
     }
-    const provider = await createNetworkProvider(directory);
+    const provider = await createNetworkProvider(directory, {
+      retryReadiness: {},
+    });
     try {
-      const quote = await quoteExactInputSingle({
+      const quote = await resolveExactInputQuote({
         provider,
         recipient: account,
         tokenIn: configuredTokenIn ?? ROBINHOOD_WETH9,
         tokenOut: required(args, "--token-out"),
         inputKind,
         amountIn: required(args, "--amount-in"),
-        fee: Number(required(args, "--fee")),
+        feeTiers: requestedFeeTiers(args),
         slippageBps: Number(required(args, "--slippage-bps")),
         deadlineSecs: Number(required(args, "--deadline-seconds")),
       });
@@ -266,6 +274,7 @@ async function strategyCommand(
     if (inputKind === "native" && configuredTokenIn !== undefined) {
       throw new Error("Native strategy pins WETH9; omit --token-in");
     }
+    const fee = optionalFee(args);
     const common = {
       kind,
       id: required(args, "--id"),
@@ -273,7 +282,7 @@ async function strategyCommand(
       inputKind,
       tokenIn: configuredTokenIn ?? ROBINHOOD_WETH9,
       tokenOut: required(args, "--token-out"),
-      fee: numberOption(args, "--fee", 3000) as 100 | 500 | 3000 | 10000,
+      ...(fee === undefined ? {} : { fee }),
       slippageBps: numberOption(args, "--slippage-bps"),
       authorization,
     };
@@ -285,7 +294,7 @@ async function strategyCommand(
         (policy.inputKind ?? "erc20") !== inputKind ||
         policy.inputToken !== getAddress(common.tokenIn) ||
         !policy.outputTokens.includes(getAddress(common.tokenOut)) ||
-        !policy.feeTiers.includes(common.fee) ||
+        (common.fee !== undefined && !policy.feeTiers.includes(common.fee)) ||
         common.slippageBps > policy.maxSlippageBps
       ) {
         throw new Error("Strategy does not fit the active autonomy policy");
@@ -410,12 +419,18 @@ async function autonomousBuyCommand(
         : "balance-bps";
       const suppliedSpendValue =
         optional(args, "--spend-wei") ?? optional(args, "--spend-bps");
+      const suppliedFeeOverride = optionalFee(args);
+      const suppliedFeeSelection = suppliedFeeOverride ?? "auto";
       if (
         source.requestIntent.tokenOut !==
           getAddress(required(args, "--token-out")) ||
         (source.requestIntent.inputKind ?? "erc20") !== suppliedInputKind ||
         source.requestIntent.spendType !== suppliedSpendType ||
-        source.requestIntent.spendValue !== suppliedSpendValue
+        source.requestIntent.spendValue !== suppliedSpendValue ||
+        (source.requestIntent.feeSelection === undefined
+          ? suppliedFeeOverride !== undefined &&
+            suppliedFeeOverride !== existing.quote.fee
+          : source.requestIntent.feeSelection !== suppliedFeeSelection)
       ) {
         throw new Error("Autonomous operation ID already has another request");
       }
@@ -436,7 +451,9 @@ async function autonomousBuyCommand(
   if (Boolean(spendWei) === Boolean(spendBps)) {
     throw new Error("Autonomy buy requires exactly one spend amount");
   }
-  const provider = await createNetworkProvider(directory);
+  const provider = await createNetworkProvider(directory, {
+    retryReadiness: {},
+  });
   try {
     const inputKind =
       optional(args, "--input-kind") ?? policy.inputKind ?? "erc20";
@@ -451,13 +468,15 @@ async function autonomousBuyCommand(
     ]);
     const balance =
       inputKind === "native"
-        ? await provider.getBalance(account)
+        ? await retryTransientRpc(() => provider.getBalance(account))
         : (token.decodeFunctionResult(
             "balanceOf",
-            await provider.call({
-              to: policy.inputToken,
-              data: token.encodeFunctionData("balanceOf", [account]),
-            }),
+            await retryTransientRpc(() =>
+              provider.call({
+                to: policy.inputToken,
+                data: token.encodeFunctionData("balanceOf", [account]),
+              }),
+            ),
           )[0] as bigint);
     const basisPoints = spendBps === undefined ? null : Number(spendBps);
     if (
@@ -472,11 +491,8 @@ async function autonomousBuyCommand(
       spendWei === undefined
         ? (balance * BigInt(basisPoints!)) / 10_000n
         : BigInt(spendWei);
-    const fee = numberOption(args, "--fee", policy.feeTiers[0]!) as
-      | 100
-      | 500
-      | 3000
-      | 10000;
+    const feeTiers = requestedFeeTiers(args, policy.feeTiers);
+    const feeSelection = optionalFee(args) ?? "auto";
     const slippageBps = numberOption(
       args,
       "--slippage-bps",
@@ -487,13 +503,13 @@ async function autonomousBuyCommand(
       "--deadline-seconds",
       policy.maxDeadlineSeconds,
     );
-    const quote = await quoteExactInputSingle({
+    const quote = await resolveExactInputQuote({
       provider,
       recipient: account,
       tokenIn: policy.inputToken,
       tokenOut: required(args, "--token-out"),
       amountIn,
-      fee,
+      feeTiers,
       slippageBps,
       deadlineSecs: deadlineSeconds,
       inputKind,
@@ -515,7 +531,7 @@ async function autonomousBuyCommand(
       tokenOut: required(args, "--token-out"),
       amountIn: amountIn.toString(),
       inputBalance: balance.toString(),
-      fee,
+      fee: quote.fee as UniswapV3FeeTier,
       slippageBps,
       deadlineSeconds,
       gasLimit: policy.gasLimit,
@@ -542,6 +558,7 @@ async function autonomousBuyCommand(
           inputKind,
           spendType: spendWei === undefined ? "balance-bps" : "fixed",
           spendValue: spendWei ?? spendBps!,
+          feeSelection,
         },
       },
     });
@@ -766,6 +783,7 @@ async function orderCommand(directory: string, args: string[]): Promise<void> {
       ]),
     );
     const identity = await configuredIdentity(directory);
+    const fee = optionalFee(args);
     const order = await createOrder(directory, {
       id: required(args, "--id"),
       side: required(args, "--side") as "buy" | "sell",
@@ -774,7 +792,7 @@ async function orderCommand(directory: string, args: string[]): Promise<void> {
       tokenOut: required(args, "--token-out"),
       amountIn: required(args, "--amount-in"),
       limitPrice: optional(args, "--limit-price"),
-      fee: numberOption(args, "--fee", 3000) as 100 | 500 | 3000 | 10000,
+      ...(fee === undefined ? {} : { fee }),
       slippageBps: numberOption(args, "--slippage-bps"),
       deadlineSeconds: numberOption(args, "--deadline-seconds"),
       account: identity,
@@ -842,15 +860,17 @@ async function checkOrder(directory: string, id: string): Promise<void> {
     throw new Error("Order account does not match the configured wallet");
   }
 
-  const provider = await createNetworkProvider(directory);
+  const provider = await createNetworkProvider(directory, {
+    retryReadiness: {},
+  });
   try {
-    const quote = await quoteExactInputSingle({
+    const quote = await resolveExactInputQuote({
       provider,
       recipient: order.account,
       tokenIn: order.tokenIn,
       tokenOut: order.tokenOut,
       amountIn: order.amountIn,
-      fee: order.fee,
+      feeTiers: order.fee === undefined ? UNISWAP_V3_FEE_TIERS : [order.fee],
       slippageBps: order.slippageBps,
       deadlineSecs: order.deadlineSeconds,
     });
@@ -895,6 +915,35 @@ function optional(args: string[], name: string): string | undefined {
   const value = index < 0 ? undefined : args[index + 1];
   if (value?.startsWith("--")) throw new Error(`${name} requires a value`);
   return value;
+}
+
+function optionalFee(args: string[]): UniswapV3FeeTier | undefined {
+  const value = optional(args, "--fee");
+  if (value === undefined) {
+    return undefined;
+  }
+
+  const fee = Number(value);
+  if (!UNISWAP_V3_FEE_TIERS.includes(fee as UniswapV3FeeTier)) {
+    throw new Error("--fee must be a standard Uniswap V3 fee tier");
+  }
+
+  return fee as UniswapV3FeeTier;
+}
+
+function requestedFeeTiers(
+  args: string[],
+  allowed: readonly UniswapV3FeeTier[] = UNISWAP_V3_FEE_TIERS,
+): readonly UniswapV3FeeTier[] {
+  const fee = optionalFee(args);
+  if (fee === undefined) {
+    return allowed;
+  }
+  if (!allowed.includes(fee)) {
+    throw new Error("--fee is not allowed by the active autonomy policy");
+  }
+
+  return [fee];
 }
 
 function numberOption(

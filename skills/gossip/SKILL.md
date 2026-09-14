@@ -76,6 +76,12 @@ input amount. Use `gossip trade automation tick` for one deterministic pass or
 the singleton foreground `gossip trade automation run` under the owner's
 chosen supervisor. Local `trade order` records remain passive intents.
 
+Supply the token, amount or balance percentage, slippage and deadline bounds.
+Do not look up a Uniswap pool or choose a fee tier: the local CLI checks the
+policy-allowed tiers and binds the best quoted pool and fee into the exact
+quote. Use `--fee` only when the owner explicitly requests that advanced
+override; it must still be allowed by the active policy.
+
 For native input, use `--input-kind native` and omit `--token-in`; the kit pins
 the Robinhood WETH9 route. Interpret “10% of my ETH balance” as exactly 1000
 basis points only when the active policy allows native input and the requested

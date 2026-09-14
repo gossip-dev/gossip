@@ -35,7 +35,6 @@ test("creates, lists, summarizes, and cancels durable local intent orders", asyn
       tokenIn,
       tokenOut,
       amountIn: "1000",
-      fee: 3000,
       slippageBps: 100,
       deadlineSeconds: 120,
       account,
@@ -81,7 +80,9 @@ test("creates, lists, summarizes, and cancels durable local intent orders", asyn
 
     assert.equal(market.status, "open");
     assert.equal(market.limitPrice, null);
+    assert.equal(market.fee, undefined);
     assert.equal(limit.limitPrice, "1.25");
+    assert.equal(limit.fee, 500);
     assert.deepEqual(
       (await listOrders(directory, { side: "sell" })).map((order) => order.id),
       ["limit-sell-1", "market-sell-1"],
